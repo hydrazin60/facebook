@@ -132,3 +132,24 @@ export const Login = async (req, res) => {
     });
   }
 };
+
+export const LogOut = async (req, res) => {
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+      sameSite: "strict",
+      maxAge: 0,
+    });
+    res.status(200).json({
+      message: "User logged out successfully",
+      success: true,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Internal server error",
+      success: false,
+      error: true,
+    });
+  }
+};
