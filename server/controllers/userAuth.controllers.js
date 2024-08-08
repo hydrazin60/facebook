@@ -1,7 +1,8 @@
 import { User } from "../model/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-
+import getDataUri from "../utils/datauri.js";
+import cloudinary from "../utils/cloudinary.js";
 export const Register = async (req, res) => {
   try {
     const {
@@ -146,6 +147,135 @@ export const LogOut = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
+    res.status(500).json({
+      message: "Internal server error",
+      success: false,
+      error: true,
+    });
+  }
+};
+
+export const getProfile = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    let user = await User.findById(userId).select("-password");
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+        success: false,
+        error: true,
+      });
+    }
+    res.status(200).json({
+      message: "User fetched successfully",
+      success: true,
+      data: user,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Internal server error",
+      success: false,
+      error: true,
+    });
+  }
+};
+
+// export const EditProfile = async (req, res) => {
+//   try {
+//     const userId = req.id;
+//     if (!userId) {
+//       return res.status(404).json({
+//         message: "User not found",
+//         success: false,
+//         error: true,
+//       });
+//     }
+
+//     const { firstName, lastName, gender, bio } = req.body;
+//     const profilePicture = req.files?.profilePicture;
+//     const coverPicture = req.files?.coverPicture;
+
+//     if (profilePicture) {
+//       const fileUri = getDataUri(profilePicture);
+//       const fileResponse = await cloudinary.uploader.upload(fileUri);
+//       user.profilePicture = fileResponse?.url;
+//     }
+
+//     if (coverPicture) {
+//       const fileUri = getDataUri(coverPicture);
+//       const fileResponse = await cloudinary.uploader.upload(fileUri);
+//       user.coverPicture = fileResponse?.url;
+//     }
+
+//     const user = await User.findById(userId);
+//     if (bio) user.bio = bio;
+//     if (firstName) user.firstName = firstName;
+//     if (lastName) user.lastName = lastName;
+//     if (gender) user.gender = gender;
+//     await user.save();
+
+//     return res.status(200).json({
+//       message: "Profile updated successfully",
+//       success: true,
+//       data: user,
+//     });
+//   } catch (error) {
+//     console.error("EditProfile error:", error);
+//     res.status(500).json({
+//       message: "Internal server error",
+//       success: false,
+//       error: true,
+//     });
+//   }
+// };
+
+export const EditProfile = async (req, res) => {
+  try {
+    console.log("Received files:", req.files); // Log the received files
+
+    const userId = req.id;
+    if (!userId) {
+      return res.status(404).json({
+        message: "User not found",
+        success: false,
+        error: true,
+      });
+    }
+
+    const { firstName, lastName, gender, bio } = req.body;
+    const { profilePicture, coverPicture } = req.files || {};
+
+    let cloudResponse;
+
+    if (profilePicture) {
+      const fileUri = getDataUri(profilePicture);
+      const fileResponse = await cloudinary.uploader.upload(fileUri);
+      cloudResponse = fileResponse;
+    }
+
+    if (coverPicture) {
+      const fileUri = getDataUri(coverPicture);
+      const fileResponse = await cloudinary.uploader.upload(fileUri);
+      cloudResponse = fileResponse;
+    }
+
+    const user = await User.findById(userId);
+    if (bio) user.bio = bio;
+    if (firstName) user.firstName = firstName;
+    if (lastName) user.lastName = lastName;
+    if (gender) user.gender = gender.trim(); // Trim whitespace
+    if (profilePicture) user.profilePicture = cloudResponse?.url;
+    if (coverPicture) user.coverPicture = cloudResponse?.url;
+
+    await user.save();
+    return res.status(200).json({
+      message: "Profile updated successfully",
+      success: true,
+      data: user,
+    });
+  } catch (error) {
+    console.error("EditProfile error:", error);
     res.status(500).json({
       message: "Internal server error",
       success: false,
