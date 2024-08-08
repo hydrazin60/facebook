@@ -1,7 +1,8 @@
 import express from "express";
 import {
-    EditProfile,
+  EditProfile,
   getProfile,
+  GetSuggestedUsers,
   Login,
   LogOut,
   Register,
@@ -13,5 +14,7 @@ router.route("/register").post(Register);
 router.route("/login").post(Login);
 router.route("/logout").get(LogOut);
 router.route("/get-profile/:id").get(getProfile);
-router.route("/edit-profile").post( isAuthenticated , EditProfile)
+router.route("/edit-profile").post(isAuthenticated, EditProfile);
+router.route("/SuggestedUsers").get( isAuthenticated , GetSuggestedUsers);
+
 export default router;

@@ -36,9 +36,9 @@ export const Register = async (req, res) => {
       lastName,
       email,
       password: hashedPassword,
-      mobileNumber,
       profilePicture,
       coverPicture,
+      mobileNumber: mobileNumber || "",
       gender,
       bio,
     });
@@ -180,7 +180,6 @@ export const getProfile = async (req, res) => {
     });
   }
 };
-
 // export const EditProfile = async (req, res) => {
 //   try {
 //     const userId = req.id;
@@ -276,6 +275,31 @@ export const EditProfile = async (req, res) => {
     });
   } catch (error) {
     console.error("EditProfile error:", error);
+    res.status(500).json({
+      message: "Internal server error",
+      success: false,
+      error: true,
+    });
+  }
+};
+
+export const GetSuggestedUsers = async (req, res) => {
+  try {
+    const SuggestedUsers = await User.find({ _id: { $ne: req.id } })
+      .limit(12)
+      .select("-password");
+    if (!SuggestedUsers) {
+      return res.status(404).json({
+        message: "Suggested users not found",
+      });
+    }
+    return res.status(200).json({
+      message: "Suggested users fetched successfully",
+      success: true,
+      data: SuggestedUsers,
+    });
+  } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: "Internal server error",
       success: false,

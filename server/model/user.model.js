@@ -24,8 +24,11 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+
     mobileNumber: {
       type: String,
+      unique: true,
+      sparse: true, // Only unique for non-null values
     },
     profilePicture: {
       type: String,
