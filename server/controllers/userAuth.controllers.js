@@ -3,6 +3,8 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import getDataUri from "../utils/datauri.js";
 import cloudinary from "../utils/cloudinary.js";
+import mongoose from "mongoose";
+
 export const Register = async (req, res) => {
   try {
     const {
@@ -180,59 +182,9 @@ export const getProfile = async (req, res) => {
     });
   }
 };
-// export const EditProfile = async (req, res) => {
-//   try {
-//     const userId = req.id;
-//     if (!userId) {
-//       return res.status(404).json({
-//         message: "User not found",
-//         success: false,
-//         error: true,
-//       });
-//     }
-
-//     const { firstName, lastName, gender, bio } = req.body;
-//     const profilePicture = req.files?.profilePicture;
-//     const coverPicture = req.files?.coverPicture;
-
-//     if (profilePicture) {
-//       const fileUri = getDataUri(profilePicture);
-//       const fileResponse = await cloudinary.uploader.upload(fileUri);
-//       user.profilePicture = fileResponse?.url;
-//     }
-
-//     if (coverPicture) {
-//       const fileUri = getDataUri(coverPicture);
-//       const fileResponse = await cloudinary.uploader.upload(fileUri);
-//       user.coverPicture = fileResponse?.url;
-//     }
-
-//     const user = await User.findById(userId);
-//     if (bio) user.bio = bio;
-//     if (firstName) user.firstName = firstName;
-//     if (lastName) user.lastName = lastName;
-//     if (gender) user.gender = gender;
-//     await user.save();
-
-//     return res.status(200).json({
-//       message: "Profile updated successfully",
-//       success: true,
-//       data: user,
-//     });
-//   } catch (error) {
-//     console.error("EditProfile error:", error);
-//     res.status(500).json({
-//       message: "Internal server error",
-//       success: false,
-//       error: true,
-//     });
-//   }
-// };
 
 export const EditProfile = async (req, res) => {
   try {
-    console.log("Received files:", req.files); // Log the received files
-
     const userId = req.id;
     if (!userId) {
       return res.status(404).json({
@@ -247,13 +199,13 @@ export const EditProfile = async (req, res) => {
 
     let cloudResponse;
 
-    if (profilePicture) {
+    if (profilePicture && profilePicture.length > 0) {
       const fileUri = getDataUri(profilePicture);
       const fileResponse = await cloudinary.uploader.upload(fileUri);
       cloudResponse = fileResponse;
     }
 
-    if (coverPicture) {
+    if (coverPicture && coverPicture.length > 0) {
       const fileUri = getDataUri(coverPicture);
       const fileResponse = await cloudinary.uploader.upload(fileUri);
       cloudResponse = fileResponse;
@@ -264,8 +216,10 @@ export const EditProfile = async (req, res) => {
     if (firstName) user.firstName = firstName;
     if (lastName) user.lastName = lastName;
     if (gender) user.gender = gender.trim(); // Trim whitespace
-    if (profilePicture) user.profilePicture = cloudResponse?.url;
-    if (coverPicture) user.coverPicture = cloudResponse?.url;
+    if (profilePicture && profilePicture.length > 0)
+      user.profilePicture = cloudResponse?.url;
+    if (coverPicture && coverPicture.length > 0)
+      user.coverPicture = cloudResponse?.url;
 
     await user.save();
     return res.status(200).json({
@@ -307,3 +261,184 @@ export const GetSuggestedUsers = async (req, res) => {
     });
   }
 };
+
+export const FollowUnFollow = async (req, res) => {
+  try {
+    const FollowKarneWalaId = req.id;
+    const JiskoFollowKarungaId = req.params.id;
+    if (
+      !mongoose.isValidObjectId(FollowKarneWalaId) ||
+      !mongoose.isValidObjectId(JiskoFollowKarungaId)
+    ) {
+      return res.status(400).json({
+        message: "Invalid user ID format",
+        success: false,
+        error: true,
+      });
+    }
+
+    if (FollowKarneWalaId === JiskoFollowKarungaId) {
+      return res.status(400).json({
+        message: "You can't follow yourself",
+        success: false,
+        error: true,
+      });
+    }
+
+    const user = await User.findById(FollowKarneWalaId);
+    const targetUser = await User.findById(JiskoFollowKarungaId);
+
+    if (!user || !targetUser) {
+      return res.status(404).json({
+        message: "User not found",
+        success: false,
+        error: true,
+      });
+    }
+    const ifFollowing = user.followers.includes(JiskoFollowKarungaId);
+    if (ifFollowing) {
+      await Promise.all([
+        user.updateOne(
+          { _id: FollowKarneWalaId },
+          { $pull: { followers: JiskoFollowKarungaId } }
+        ),
+        targetUser.updateOne(
+          { _id: JiskoFollowKarungaId },
+          { $pull: { following: FollowKarneWalaId } }
+        ),
+      ]);
+
+      return res.status(200).json({
+        message: `${targetUser.firstName} unfollowed successfully`,
+        success: true,
+      });
+    } else {
+      await Promise.all([
+        user.updateOne(
+          { _id: FollowKarneWalaId },
+          { $push: { followers: JiskoFollowKarungaId } }
+        ),
+        targetUser.updateOne(
+          { _id: JiskoFollowKarungaId },
+          { $push: { following: FollowKarneWalaId } }
+        ),
+      ]);
+
+      return res.status(200).json({
+        message: `${targetUser.firstName} followed successfully`,
+        success: true,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Internal server error",
+      success: false,
+      error: true,
+    });
+  }
+};
+
+// export const EditProfile = async (req, res) => {
+//   try {
+//     const userId = req.id;
+//     const { firstName, lastName, gender, bio } = req.body;
+//     const { profilePicture, coverPicture } = req.files || {};
+//     const user = await User.findById(userId);
+//     console.log("userId is", userId);
+//     if (!user) {
+//       return res.status(404).json({
+//         message: "User not found",
+//         success: false,
+//         error: true,
+//       });
+//     }
+//     let cloudResponse;
+
+//     if (profilePicture) {
+//       const fileUri = getDataUri(profilePicture);
+//       const cloudResponse = await cloudinary.uploader.upload(fileUri);
+//       user.profilePicture = cloudResponse?.secure_url;
+//     }
+
+//     if (coverPicture) {
+//       const fileUri = getDataUri(coverPicture);
+//       const cloudResponse = await cloudinary.uploader.upload(fileUri);
+//       user.coverPicture = cloudResponse?.secure_url;
+//     }
+//     if (bio) user.bio = bio;
+//     if (firstName) user.firstName = firstName;
+//     if (lastName) user.lastName = lastName;
+//     if (gender) user.gender = gender.trim();
+//     // if (profilePicture) user.profilePicture = cloudResponse?.url;
+//     // if (coverPicture) user.coverPicture = cloudResponse?.url;
+
+//     await user.save();
+//     return res.status(200).json({
+//       message: "Profile updated successfully",
+//       success: true,
+//       data: user,
+//     });
+//   } catch (error) {
+//     console.error("EditProfile error:", error);
+//     res.status(500).json({
+//       message: "Internal server error",
+//       success: false,
+//       error: true,
+//     });
+//   }
+// };
+
+// export const EditProfile = async (req, res) => {
+//   try {
+//     console.log("Received files:", req.files); // Log the received files
+
+//     const userId = req.id;
+//     if (!userId) {
+//       return res.status(404).json({
+//         message: "User not found",
+//         success: false,
+//         error: true,
+//       });
+//     }
+
+//     const { firstName, lastName, gender, bio } = req.body;
+//     const { profilePicture, coverPicture } = req.files || {};
+
+//     let cloudResponse;
+
+//     if (profilePicture) {
+//       const fileUri = getDataUri(profilePicture);
+//       const fileResponse = await cloudinary.uploader.upload(fileUri);
+//       cloudResponse = fileResponse;
+//     }
+
+//     if (coverPicture) {
+//       const fileUri = getDataUri(coverPicture);
+//       const fileResponse = await cloudinary.uploader.upload(fileUri);
+//       cloudResponse = fileResponse;
+//     }
+
+//     const user = await User.findById(userId);
+//     if (bio) user.bio = bio;
+//     if (firstName) user.firstName = firstName;
+//     if (lastName) user.lastName = lastName;
+//     if (gender) user.gender = gender.trim(); // Trim whitespace
+//     if (profilePicture) user.profilePicture = cloudResponse?.url;
+//     if (coverPicture) user.coverPicture = cloudResponse?.url;
+
+//     await user.save();
+//     return res.status(200).json({
+//       message: "Profile updated successfully",
+//       success: true,
+//       data: user,
+//     });
+//   } catch (error) {
+//     console.error("EditProfile error:", error);
+//     res.status(500).json({
+//       message: "Internal server error",
+//       success: false,
+//       error: true,
+//     });
+//   }
+// };

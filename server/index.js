@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import Userrouter from "./routes/user.routes.js";
 import cookieParser from "cookie-parser";
-import fileUpload from 'express-fileupload';
 
 dotenv.config();
 const app = express();
@@ -11,7 +10,6 @@ const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(fileUpload());
 
 app.use("/facebook/api/user/v1", Userrouter);
 
