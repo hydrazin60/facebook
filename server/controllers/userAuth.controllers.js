@@ -32,6 +32,13 @@ export const Register = async (req, res) => {
         success: false,
       });
     }
+    const existingUserByMobileNumber = await User.findOne({ mobileNumber });
+    if (existingUserByMobileNumber) {
+      return res.status(400).json({
+        message: "User already exists! Try logging in instead by mobile number",
+        success: false,
+      });
+    }
     const hashedPassword = await bcrypt.hash(password, 10);
     await User.create({
       firstName,
@@ -338,107 +345,3 @@ export const FollowUnFollow = async (req, res) => {
     });
   }
 };
-
-// export const EditProfile = async (req, res) => {
-//   try {
-//     const userId = req.id;
-//     const { firstName, lastName, gender, bio } = req.body;
-//     const { profilePicture, coverPicture } = req.files || {};
-//     const user = await User.findById(userId);
-//     console.log("userId is", userId);
-//     if (!user) {
-//       return res.status(404).json({
-//         message: "User not found",
-//         success: false,
-//         error: true,
-//       });
-//     }
-//     let cloudResponse;
-
-//     if (profilePicture) {
-//       const fileUri = getDataUri(profilePicture);
-//       const cloudResponse = await cloudinary.uploader.upload(fileUri);
-//       user.profilePicture = cloudResponse?.secure_url;
-//     }
-
-//     if (coverPicture) {
-//       const fileUri = getDataUri(coverPicture);
-//       const cloudResponse = await cloudinary.uploader.upload(fileUri);
-//       user.coverPicture = cloudResponse?.secure_url;
-//     }
-//     if (bio) user.bio = bio;
-//     if (firstName) user.firstName = firstName;
-//     if (lastName) user.lastName = lastName;
-//     if (gender) user.gender = gender.trim();
-//     // if (profilePicture) user.profilePicture = cloudResponse?.url;
-//     // if (coverPicture) user.coverPicture = cloudResponse?.url;
-
-//     await user.save();
-//     return res.status(200).json({
-//       message: "Profile updated successfully",
-//       success: true,
-//       data: user,
-//     });
-//   } catch (error) {
-//     console.error("EditProfile error:", error);
-//     res.status(500).json({
-//       message: "Internal server error",
-//       success: false,
-//       error: true,
-//     });
-//   }
-// };
-
-// export const EditProfile = async (req, res) => {
-//   try {
-//     console.log("Received files:", req.files); // Log the received files
-
-//     const userId = req.id;
-//     if (!userId) {
-//       return res.status(404).json({
-//         message: "User not found",
-//         success: false,
-//         error: true,
-//       });
-//     }
-
-//     const { firstName, lastName, gender, bio } = req.body;
-//     const { profilePicture, coverPicture } = req.files || {};
-
-//     let cloudResponse;
-
-//     if (profilePicture) {
-//       const fileUri = getDataUri(profilePicture);
-//       const fileResponse = await cloudinary.uploader.upload(fileUri);
-//       cloudResponse = fileResponse;
-//     }
-
-//     if (coverPicture) {
-//       const fileUri = getDataUri(coverPicture);
-//       const fileResponse = await cloudinary.uploader.upload(fileUri);
-//       cloudResponse = fileResponse;
-//     }
-
-//     const user = await User.findById(userId);
-//     if (bio) user.bio = bio;
-//     if (firstName) user.firstName = firstName;
-//     if (lastName) user.lastName = lastName;
-//     if (gender) user.gender = gender.trim(); // Trim whitespace
-//     if (profilePicture) user.profilePicture = cloudResponse?.url;
-//     if (coverPicture) user.coverPicture = cloudResponse?.url;
-
-//     await user.save();
-//     return res.status(200).json({
-//       message: "Profile updated successfully",
-//       success: true,
-//       data: user,
-//     });
-//   } catch (error) {
-//     console.error("EditProfile error:", error);
-//     res.status(500).json({
-//       message: "Internal server error",
-//       success: false,
-//       error: true,
-//     });
-//   }
-// };

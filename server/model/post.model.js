@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
-
-const postSchema = new mongoose.Schema(
+const postSchema = mongoose.Schema(
   {
     caption: {
       type: String,
@@ -41,7 +40,6 @@ const postSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-postSchema.index({ author: 1 });
-postSchema.index({ postShares: 1 }); // Index to optimize queries involving postShares
 
-export const Post = mongoose.model("Post", postSchema);
+const Post = mongoose.model("Post", postSchema);
+export default Post;
