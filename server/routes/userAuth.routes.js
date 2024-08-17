@@ -1,5 +1,9 @@
 import express from "express";
-import { Login, Register } from "../controllers/userAuth.controllers.js";
+import {
+  Login,
+  Logout,
+  Register,
+} from "../controllers/userAuth.controllers.js";
 import upload from "../middlewares/multer.js";
 
 const UserAuthRouter = express.Router();
@@ -11,6 +15,6 @@ UserAuthRouter.post(
   ]),
   Register
 );
-
 UserAuthRouter.post("/login", Login);
+UserAuthRouter.get("/logout", Logout);
 export default UserAuthRouter;

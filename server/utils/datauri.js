@@ -8,8 +8,8 @@ const getDataUri = (file) => {
     if (!file || !file.originalname || !file.buffer) {
       throw new Error("File not found");
     }
-    const ext = path.extname(file.originalname).toString(); // Use 'ext' here
-    return parser.format(ext, file.buffer).content; // Pass 'ext' instead of 'extname'
+    const ext = path.extname(file.originalname).toString();
+    return parser.format(ext, file.buffer).content;
   } catch (err) {
     console.log(`Data Uri error: ${err.message}`);
     throw err;

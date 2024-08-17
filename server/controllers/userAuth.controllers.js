@@ -76,7 +76,6 @@ export const Login = async (req, res) => {
         success: false,
       });
     }
-
     const existingUser = await User.findOne({ email });
     if (!existingUser) {
       return res.status(400).json({
@@ -96,7 +95,6 @@ export const Login = async (req, res) => {
         success: false,
       });
     }
-
     const userData = {
       _id: existingUser._id,
       firstName: existingUser.firstName,
@@ -140,6 +138,27 @@ export const Login = async (req, res) => {
     console.log(error.message);
     return res.status(500).json({
       message: `Register error ${error.message}`,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+export const Logout = async (req, res) => {
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+      sameSite: "strict",
+    });
+    res.status(200).json({
+      message: "You are logged out successfully",
+      error: false,
+      success: true,
+    });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({
+      message: `Logout error ${error.message}`,
       error: true,
       success: false,
     });
