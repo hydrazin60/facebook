@@ -164,3 +164,31 @@ export const Logout = async (req, res) => {
     });
   }
 };
+
+export const getProfile = async (req, res) => {
+  try {
+    const userId = req.user;
+
+    const user = await User.findById(userId).select("-password");
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+        error: true,
+        success: false,
+      });
+    }
+    return res.status(200).json({
+      message: "User found successfully",
+      error: false,
+      success: true,
+      user,
+    });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({
+      message: `Get profile error ${error.message}`,
+      error: true,
+      success: false,
+    });
+  }
+};
