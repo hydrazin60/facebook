@@ -284,3 +284,28 @@ export const updateProfile = async (req, res) => {
     });
   }
 };
+
+export const suggestedUser = async (req, res) => {
+  try {
+    const suggestedUser = await User.find({ _id: { $ne: req.user } })
+      .limit(6)
+      .select("-password");
+    if (!suggestedUser) {
+      return res.status(404).json({
+        message: "Suggested user not found",
+        success: false,
+      });
+    }
+    return res.status(200).json({
+      message: "Suggested user fetched successfully",
+      success: true,
+      suggestedUser,
+    });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({
+      message: `SuggestedUser error : ${error.message}`,
+      success: false,
+    });
+  }
+};

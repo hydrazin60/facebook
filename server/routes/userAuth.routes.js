@@ -5,6 +5,7 @@ import {
   Login,
   Logout,
   Register,
+  suggestedUser,
   updateProfile,
 } from "../controllers/userAuth.controllers.js";
 import upload from "../middlewares/multer.js";
@@ -32,4 +33,5 @@ UserAuthRouter.put(
   isAuthenticated,
   updateProfile
 );
+UserAuthRouter.get("/suggested~user", isAuthenticated, suggestedUser);
 export default UserAuthRouter;
