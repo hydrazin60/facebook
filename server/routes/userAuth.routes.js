@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  getOwnProfile,
   getProfile,
   Login,
   Logout,
@@ -20,4 +21,5 @@ UserAuthRouter.post(
 UserAuthRouter.post("/login", Login);
 UserAuthRouter.get("/logout", Logout);
 UserAuthRouter.get("/profile-view", isAuthenticated, getProfile);
+UserAuthRouter.get("/view_own-profile" , isAuthenticated , getOwnProfile)
 export default UserAuthRouter;

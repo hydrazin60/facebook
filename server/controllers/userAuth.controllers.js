@@ -192,3 +192,30 @@ export const getProfile = async (req, res) => {
     });
   }
 };
+
+export const getOwnProfile = async (req, res) => {
+  try {
+    const userId = req.user;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+        error: true,
+        success: false,
+      });
+    }
+    return res.status(200).json({
+      message: "User found successfully",
+      error: false,
+      success: true,
+      user,
+    });
+  } catch (error) {
+    console.log("getOwnProfile error: ", error.message);
+    return res.status(500).json({
+      message: `getOwnProfile error ${error.message}`,
+      error: true,
+      success: false,
+    });
+  }
+};
