@@ -35,6 +35,11 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    gender: {
+      type: String,
+      enum: ["male", "female", "other"],
+      default: "male",
+    },
     livesIn: {
       type: String,
       default: "",
@@ -81,7 +86,8 @@ const userSchema = new mongoose.Schema(
     ],
     relationship: {
       type: String,
-      default: "",
+      enum: ["single", "relationship", "married", "complicated", "divorced"],
+      default: "single",
     },
   },
   {
