@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  followOrUnfollow,
   getOwnProfile,
   getProfile,
   Login,
@@ -34,4 +35,5 @@ UserAuthRouter.put(
   updateProfile
 );
 UserAuthRouter.get("/suggested~user", isAuthenticated, suggestedUser);
+UserAuthRouter.get("/followOrUnfollow/:id", isAuthenticated, followOrUnfollow);
 export default UserAuthRouter;

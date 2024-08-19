@@ -309,3 +309,65 @@ export const suggestedUser = async (req, res) => {
     });
   }
 };
+
+export const followOrUnfollow = async (req, res) => {
+  try {
+    const followers = req.user;
+    const following = req.params.id;
+    if (following.length !== 24) {
+      return res.status(404).json({
+        message: "invalid user id",
+        success: false,
+      });
+    }
+
+    const jiban = await User.findById(followers);
+    const karuna = await User.findById(following);
+    if (followers === following) {
+      return res.status(404).json({
+        message: "You can't follow yourself",
+        success: false,
+      });
+    }
+    if (!karuna) {
+      return res.status(404).json({
+        message: "User not found",
+        success: false,
+      });
+    }
+    if (!jiban) {
+      return res.status(404).json({
+        message: "User not found",
+        success: false,
+      });
+    }
+
+    const isFollowing = jiban.following.includes(following);
+    if (isFollowing) {
+      await Promise.all([
+        User.updateOne({ _id: followers }, { $pull: { following: following } }),
+        User.updateOne({ _id: following }, { $pull: { followers: followers } }),
+      ]);
+      return res.status(200).json({
+        message: ` ${karuna.firstName} Unfollowed successfully`,
+        success: true,
+      });
+    } else {
+      await Promise.all([
+        User.updateOne({ _id: followers }, { $push: { following: following } }),
+        User.updateOne({ _id: following }, { $push: { followers: followers } }),
+      ]);
+
+      return res.status(200).json({
+        message: ` ${karuna.firstName} Followed successfully`,
+        success: true,
+      });
+    }
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({
+      message: `followOrUnfollow error : ${error.message}`,
+      success: false,
+    });
+  }
+};
