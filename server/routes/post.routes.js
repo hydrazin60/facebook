@@ -9,7 +9,7 @@
 
 import express from "express";
 import { isAuthenticated } from "../middlewares/isAuthenticated.js";
-import { createPost } from "../controllers/Post.controllers.js";
+import { createPost, getAllPosts } from "../controllers/Post.controllers.js";
 import upload from "../middlewares/multer.js";
 const PostRouter = express.Router();
 
@@ -19,5 +19,6 @@ PostRouter.post(
   upload.single("image"),
   createPost
 );
+PostRouter.get("/show-all-post", isAuthenticated, getAllPosts)
 
 export default PostRouter;

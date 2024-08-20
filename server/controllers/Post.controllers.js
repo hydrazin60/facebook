@@ -2,7 +2,7 @@ import sharp from "sharp";
 import Post from "../models/post.model.js";
 import cloudinary from "../utils/cloudinary.js";
 import User from "../models/user.models.js";
-
+import Comment from "../models/comment.model.js";
 export const createPost = async (req, res) => {
   try {
     const { caption } = req.body;
@@ -50,6 +50,39 @@ export const createPost = async (req, res) => {
     console.log(error.message);
     return res.status(500).json({
       message: `createPost error: ${error.message}`,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+export const getAllPosts = async (req, res) => {
+  try {
+    const post = await Post.find()
+      .sort({ createdAt: -1 })
+      .populate({
+        path: "authorId",
+        select: " firstName  lastName  profilePic ",
+      })
+      .populate({
+        path: "comments",
+        sort: { createdAt: -1 },
+        populate: {
+          path: "autherId",
+          select: "firstName lastName profilePic",
+        },
+      });
+
+    return res.status(200).json({
+      message: "All posts fetched successfully",
+      data: post,
+      error: false,
+      success: true,
+    });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({
+      message: `getAllPosts error: ${error.message}`,
       error: true,
       success: false,
     });
