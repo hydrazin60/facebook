@@ -3,18 +3,20 @@ const postSchema = new mongoose.Schema(
   {
     caption: {
       type: String,
-      default: "",
+      default: function () {
+        return `Posted on ${new Date().toLocaleDateString()}`;
+      },
     },
     image: {
       type: String,
       required: true,
     },
-    autherId:[
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
+    authorId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+
     likes: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -33,5 +35,4 @@ const postSchema = new mongoose.Schema(
   { timestamps: true }
 );
 const Post = mongoose.model("Post", postSchema);
-
 export default Post;

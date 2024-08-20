@@ -2,10 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import UserAuthRouter from "./routes/userAuth.routes.js";
-import cookieParser
-
-
-from "cookie-parser";
+import cookieParser from "cookie-parser";
+import PostRouter from "./routes/post.routes.js";
 
 dotenv.config();
 const app = express();
@@ -16,6 +14,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/facebook/api/v1/user", UserAuthRouter);
+app.use("/facebook/api/v1/post", PostRouter);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
