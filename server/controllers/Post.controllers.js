@@ -88,3 +88,44 @@ export const getAllPosts = async (req, res) => {
     });
   }
 };
+
+export const getUserPosts = async (req, res) => {
+  try {
+    const authorId = req.user;
+    const user = await User.findById(authorId);
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+        error: true,
+        success: false,
+      });
+    }
+    const posts = await Post.find({ authorId })
+      .sort({ createdAt: -1 })
+      .populate({
+        path: "authorId",
+        select: "firstName lastName profilePic",
+      })
+      .populate({
+        path: "comments",
+        sort: { createdAt: -1 },
+        populate: {
+          path: "autherId",
+          select: "firstName lastName profilePic",
+        },
+      });
+    return res.status(200).json({
+      message: "User posts fetched successfully",
+      data: posts,
+      error: false,
+      success: true,
+    });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({
+      message: `getUserPosts error: ${error.message}`,
+      error: true,
+      success: false,
+    });
+  }
+};

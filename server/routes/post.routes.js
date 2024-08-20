@@ -1,15 +1,10 @@
-// import express from "express";
-// import { isAuthenticated } from "../middlewares/isAuthenticated.js";
-// import { createPost } from "../controllers/Post.controllers.js";
-// const PostRouter = express.Router();
-
-// PostRouter.post("/create-post",isAuthenticated, createPost )
-
-// export default PostRouter
-
 import express from "express";
 import { isAuthenticated } from "../middlewares/isAuthenticated.js";
-import { createPost, getAllPosts } from "../controllers/Post.controllers.js";
+import {
+  createPost,
+  getAllPosts,
+  getUserPosts,
+} from "../controllers/Post.controllers.js";
 import upload from "../middlewares/multer.js";
 const PostRouter = express.Router();
 
@@ -19,6 +14,7 @@ PostRouter.post(
   upload.single("image"),
   createPost
 );
-PostRouter.get("/show-all-post", isAuthenticated, getAllPosts)
+PostRouter.get("/show-all-post", isAuthenticated, getAllPosts);
+PostRouter.get("/auther-posts", isAuthenticated, getUserPosts);
 
 export default PostRouter;
