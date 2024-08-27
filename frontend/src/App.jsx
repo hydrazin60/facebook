@@ -1,11 +1,12 @@
 import React from "react";
-import { Button } from "./components/ui/button";
-
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import SignIn from "./components/auth/SignIn";
 export default function App() {
   return (
-    <div className=" ">
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
-      <Button>click! jehfd</Button>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/sign-in" element={<SignIn />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
