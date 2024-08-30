@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { toast } from "sonner";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const footerData = [
   { id: "1", name: "English (UK)" },
   { id: "2", name: "नेपाली" },
@@ -66,6 +69,8 @@ const footerData2 = [
   { id: "52", name: "Services" },
 ];
 export default function SignIn() {
+  const navigate = useNavigate();
+  const [loding, setLoding] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -73,10 +78,62 @@ export default function SignIn() {
   const handleOnchange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    try {
+      setLoding(true);
+      const res = await axios.post(
+        "http://localhost:4000/facebook/api/v1/user/login",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+
+      if (res.data.success) {
+        navigate("/");
+        toast.success(res.data.message || "Successfully logged in!", {
+          position: "top-right",
+          autoClose: 3000,
+          style: {
+            border: "1px solid #4caf50",
+            background: "#e8f5e9",
+            color: "#4caf50",
+          },
+        });
+      } else {
+        toast.error(res.data.message || "Login failed!", {
+          position: "top-right",
+          autoClose: 3000,
+          style: {
+            border: "1px solid #f44336",
+            background: "#ffebee",
+            color: "#f44336",
+          },
+        });
+      }
+    } catch (err) {
+      console.log("sign in error", err);
+      toast.error(
+        err?.response?.data?.message || "An unexpected error occurred",
+        {
+          position: "top-right",
+          autoClose: 3000,
+          style: {
+            border: "1px solid #f44336",
+            background: "#ffebee",
+            color: "#f44336",
+          },
+        }
+      );
+    } finally {
+      setLoding(false);
+    }
   };
+
   return (
     <div className="h-[100vh] w-screen flex flex-col  overflow-y-scroll mb-10">
       <div className="h-[70%] w-full bg-gray-200 sm:h-[80%] flex   items-center justify-around ">
@@ -118,11 +175,13 @@ export default function SignIn() {
                 type="submit"
                 className="w-full bg-blue-600 hover:bg-blue-500 h-12 text-xl font-bold "
               >
-                Log In
+                {loding ? "Loading...." : "Log In"}
               </Button>
             </div>
             <div className="mt-3 flex justify-center mb-5 ">
-              <span className="text-blue-600 text-sx">Forgotten password?</span>
+              <span className="text-blue-600 text-sx cursor-pointer hover:underline">
+                Forgotten password?
+              </span>
             </div>
             <hr className="my-3 text-black" />
             <div className="flex justify-center">
