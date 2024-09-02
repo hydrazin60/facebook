@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function MainLayout() {
+export default function RightSidbar() {
   return (
     <div>
-      MainLayout
+      RightSidbar
     </div>
   )
 }
