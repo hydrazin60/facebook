@@ -103,8 +103,7 @@ import { RxAvatar } from "react-icons/rx";
 
 export default function Header() {
   return (
-    <div className="w-full bg-white shadow-md h-14 flex items-center justify-between px-4 fixed top-0 left-0">
-      {/* Left Section: Logo and Search */}
+    <div className="w-full bg-white shadow-md h-14 flex items-center justify-between px-4 fixed top-0 left-0 z-10">
       <div className="flex items-center space-x-2 w-[30%]">
         <FaFacebook className="text-5xl text-blue-600" />
 
@@ -115,7 +114,6 @@ export default function Header() {
         />
       </div>
 
-      {/* Center Section: Icons for Navigation */}
       <div className="flex items-center justify-center space-x-8 w-[40%]">
         <span className="cursor-pointer flex items-center justify-center h-12 w-28 hover:bg-gray-200 p-2 rounded-md">
           <IoHomeOutline className="text-3xl" />
@@ -134,7 +132,6 @@ export default function Header() {
         </span>
       </div>
 
-      {/* Right Section: Profile and Additional Options */}
       <div className="flex items-center space-x-3 w-[30%] justify-end">
         <span className="cursor-pointer flex items-center justify-center hover:bg-gray-200 p-2 bg-gray-300 rounded-full">
           <MdMoreVert className="text-xl  " />
