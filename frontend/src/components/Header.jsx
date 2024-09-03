@@ -103,34 +103,34 @@ import { RxAvatar } from "react-icons/rx";
 
 export default function Header() {
   return (
-    <div className="w-full bg-white shadow-md h-14 flex items-center justify-between px-4">
+    <div className="w-full bg-white shadow-md h-14 flex items-center justify-between px-4 fixed top-0 left-0">
       {/* Left Section: Logo and Search */}
       <div className="flex items-center space-x-2 w-[30%]">
-        <FaFacebook className="text-4xl text-blue-600" />
+        <FaFacebook className="text-5xl text-blue-600" />
 
         <input
           type="text"
           placeholder="Search Facebook"
-          className="hidden lg:block bg-gray-200 text-black rounded-full px-4 py-1 text-sm outline-none h-9"
+          className="hidden lg:block bg-gray-200 text-black rounded-full px-5 py-1 text-sm outline-none h-9"
         />
       </div>
 
       {/* Center Section: Icons for Navigation */}
       <div className="flex items-center justify-center space-x-8 w-[40%]">
         <span className="cursor-pointer flex items-center justify-center h-12 w-28 hover:bg-gray-200 p-2 rounded-md">
-          <IoHomeOutline className="text-2xl" />
+          <IoHomeOutline className="text-3xl" />
         </span>
         <span className="cursor-pointer flex items-center justify-center hover:bg-gray-200 p-2 rounded-md  h-12 w-28">
-          <MdOutlineGroupAdd className="text-2xl  " />
+          <MdOutlineGroupAdd className="text-3xl  " />
         </span>
         <span className="cursor-pointer flex items-center justify-center hover:bg-gray-200 p-2  rounded-md  h-12 w-28">
-          <MdOndemandVideo className="text-2xl  " />
+          <MdOndemandVideo className="text-3xl  " />
         </span>
         <span className="cursor-pointer flex items-center justify-center hover:bg-gray-200 p-2 rounded-md  h-12 w-28 ">
-          <CiShop className="text-2xl  " />
+          <CiShop className="text-3xl  " />
         </span>
         <span className="cursor-pointer flex items-center justify-center hover:bg-gray-200 p-2  rounded-md  h-12 w-28">
-          <MdGroups className="text-2xl  " />
+          <MdGroups className="text-3xl  " />
         </span>
       </div>
 
