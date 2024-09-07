@@ -21,19 +21,59 @@ import { CiShop } from "react-icons/ci";
 import { RxAvatar } from "react-icons/rx";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import axios from "axios";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 const profileDialogBoxIcons = [
-  { id: "1", name: "Setting & Profile", icon: <IoSettingsSharp /> },
-  { id: "2", name: "Help & Support", icon: <MdHelp /> },
-  { id: "3", name: "Display & Accessibility", icon: <MdNightlight /> },
-  { id: "4", name: "Give Feedback", icon: <RiMessageFill /> },
-  { id: "5", name: "Log Out", icon: <IoLogOut /> },
+  {
+    id: "IoSettingsSharp",
+    name: "Setting & Profile",
+    icon: <IoSettingsSharp />,
+  },
+  { id: "MdHelp", name: "Help & Support", icon: <MdHelp /> },
+  {
+    id: "MdNightlight",
+    name: "Display & Accessibility",
+    icon: <MdNightlight />,
+  },
+  { id: "RiMessageFill", name: "Give Feedback", icon: <RiMessageFill /> },
+  { id: "IoLogOut", name: "Log Out", icon: <IoLogOut /> },
 ];
 
 const nisan =
   "https://scontent.fktm21-1.fna.fbcdn.net/v/t1.6435-9/123201081_102426248343348_4913614110525775662_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=4kag0dfwACQQ7kNvgGxwyrl&_nc_ht=scontent.fktm21-1.fna&oh=00_AYCU3B6cPKwu2ESvk1Vf4FVNaGUgcA-lYkXdHAAM64EKag&oe=6701F22C";
 
 export default function Header() {
+  const navigate = useNavigate();
+
+  const LogOutHandler = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:4000/facebook/api/v1/user/logout",
+        {
+          withCredentials: true,
+        }
+      );
+      if (res.data.success) {
+        navigate("/sign-in");
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      console.log("Logout Error", error);
+      toast.error(error.response.data.message);
+    }
+  };
+
+  const sidbarHandler = (id) => {
+    if (id === "RiMessageFill") {
+      alert("Give Feedback");
+    } else if (id === "IoLogOut") {
+      if (window.confirm("Are you sure you want to log out?")) {
+        LogOutHandler();
+      }
+    }
+  };
   return (
     <div className="w-full bg-white shadow-md h-14 flex items-center justify-between px-4 fixed top-0 left-0 z-10">
       <div className="flex items-center space-x-2 w-[30%]">
@@ -99,6 +139,7 @@ export default function Header() {
                   <div
                     key={item.id}
                     className="flex gap-2 font-medium items-center justify-between py-3 hover:bg-gray-100 rounded-xl px-2 cursor-pointer"
+                    onClick={() => sidbarHandler(item.id)}
                   >
                     <div className="flex gap-2 items-center">
                       <span className=" bg-gray-300 text-xl p-2 rounded-full ">
