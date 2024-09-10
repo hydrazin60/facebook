@@ -19,7 +19,7 @@ import {
 } from "react-icons/bs";
 
 const image =
-  "https://scontent.fktm21-1.fna.fbcdn.net/v/t39.30808-6/360085714_1616525928846282_1033599316022958055_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_ohc=grInSvmsxUMQ7kNvgFZ6QW-&_nc_ht=scontent.fktm21-1.fna&oh=00_AYB9FvxFAwuWw73ovsyFi9NOIaxwRPjkUbxjRrXLOZy4Og&oe=66DC5BBD";
+  "https://scontent.fktm21-1.fna.fbcdn.net/v/t39.30808-6/360085714_1616525928846282_1033599316022958055_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_ohc=JdGzIocqStMQ7kNvgHg8S1K&_nc_ht=scontent.fktm21-1.fna&oh=00_AYA22vqGtbr0epTxeqYGWikrVFMChJACT1sh_ehDN1oa8Q&oe=66E5963D";
 
 const userRightsidemoreiconData = [
   {
