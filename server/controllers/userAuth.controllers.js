@@ -51,7 +51,7 @@ export const Register = async (req, res) => {
     });
     await newUser.save();
     res.status(201).json({
-      message: `Welcome ${newUser.firstName} to our platform`,
+      message: `Welcome ${newUser.firstName} to our platform ! Please Login to continue`,
       error: false,
       success: true,
     });

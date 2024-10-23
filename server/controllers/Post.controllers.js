@@ -35,7 +35,7 @@ export const createPost = async (req, res) => {
       )}`;
 
       const cloudResponse = await cloudinary.uploader.upload(fileUri);
-      imageUrls.push(cloudResponse.secure_url); // Add URL to array
+      imageUrls.push(cloudResponse.secure_url);
     }
 
     const post = await Post.create({
@@ -45,6 +45,11 @@ export const createPost = async (req, res) => {
     });
     await User.findByIdAndUpdate(authorId, {
       $push: { posts: post._id },
+    });
+
+    await post.populate({
+      path: "authorId",
+      select: "firstName  lastName  profilePic",
     });
 
     return res.status(201).json({

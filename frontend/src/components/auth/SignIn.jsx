@@ -165,6 +165,17 @@ export default function SignIn() {
     password: "",
   });
   const [showSignUp, setShowSignUp] = useState(false);
+  const [SignupFormData, setSignupFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    birthDay: "",
+    birthMonth: "",
+    birthYear: "",
+    gender: "",
+  });
 
   const handleOnChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -226,6 +237,62 @@ export default function SignIn() {
     }
   };
 
+  const handleInputChangeSignUp = (e) => {
+    setSignupFormData({ ...SignupFormData, [e.target.name]: e.target.value });
+  };
+
+  const handleFormSubmitSignUp = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(
+        "http://localhost:4000/facebook/api/v1/user/register",
+        SignupFormData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+
+      if (res.data.success) {
+        setShowSignUp(false);
+        toast.success(res.data.message || "Successfully signed up!", {
+          position: "top-right",
+          autoClose: 3000,
+          style: {
+            border: "1px solid #4caf50",
+            background: "#e8f5e9",
+            color: "#4caf50",
+          },
+        });
+      } else {
+        toast.error(res.data.message || "Sign up failed!", {
+          position: "top-right",
+          autoClose: 3000,
+          style: {
+            border: "1px solid #f44336",
+            background: "#ffebee",
+            color: "#f44336",
+          },
+        });
+      }
+    } catch (err) {
+      console.log("sign up error", err);
+      toast.error(
+        err?.response?.data?.message || "An unexpected error occurred",
+        {
+          position: "top-right",
+          autoClose: 3000,
+          style: {
+            border: "1px solid #f44336",
+            background: "#ffebee",
+            color: "#f44336",
+          },
+        }
+      );
+    }
+  };
   return (
     <>
       <div
@@ -345,148 +412,176 @@ export default function SignIn() {
                 onClick={() => setShowSignUp(false)}
               />
             </div>
-            <div>
+            <>
               <div className="flex flex-col gap-4">
-                <Input
-                  type="text"
-                  placeholder="First Name"
-                  className="h-10 text-lg bg-gray-100 border-2 border-gray-300"
-                  name="firstName"
-                  required
-                />
-                <Input
-                  type="text"
-                  placeholder="Last Name"
-                  className="h-10 text-lg bg-gray-100 border-2 border-gray-300"
-                  name="lastName"
-                  required
-                />
-                <Input
-                  type="email"
-                  placeholder="Mobile number or email"
-                  className="h-10 text-lg bg-gray-100 border-2 border-gray-300"
-                  name="email"
-                  required
-                />
-                <div className="flex gap-3">
+                <form
+                  action=""
+                  className="flex flex-col gap-4"
+                  onSubmit={handleFormSubmitSignUp}
+                >
+                  <Input
+                    type="text"
+                    placeholder="First Name"
+                    className="h-10 text-lg bg-gray-100 border-2 border-gray-300"
+                    name="firstName"
+                    required
+                    value={SignupFormData.firstName}
+                    onChange={handleInputChangeSignUp}
+                  />
+                  <Input
+                    type="text"
+                    placeholder="Last Name"
+                    className="h-10 text-lg bg-gray-100 border-2 border-gray-300"
+                    name="lastName"
+                    required
+                    value={SignupFormData.lastName}
+                    onChange={handleInputChangeSignUp}
+                  />
+                  <Input
+                    type="email"
+                    placeholder="Mobile number or email"
+                    className="h-10 text-lg bg-gray-100 border-2 border-gray-300"
+                    name="email"
+                    required
+                    value={SignupFormData.email}
+                    onChange={handleInputChangeSignUp}
+                  />
+                  <div className="flex gap-3">
+                    <Input
+                      type="password"
+                      placeholder="New password"
+                      className="h-10 text-lg bg-gray-100 border-2 border-gray-300"
+                      name="password"
+                      required
+                      value={SignupFormData.password}
+                      onChange={handleInputChangeSignUp}
+                    />
+                  </div>
                   <Input
                     type="password"
-                    placeholder="New password"
+                    placeholder="Confirm password"
                     className="h-10 text-lg bg-gray-100 border-2 border-gray-300"
-                    name="password"
+                    name="confirmPassword"
                     required
+                    value={SignupFormData.confirmPassword}
+                    onChange={handleInputChangeSignUp}
                   />
-                </div>
-                <Input
-                  type="password"
-                  placeholder="Confirm password"
-                  className="h-10 text-lg bg-gray-100 border-2 border-gray-300"
-                  name="confirmPassword"
-                  required
-                />
 
-                <div>
-                  <label className="text-xs text-gray-500">Birthday ?</label>
-                  <div className="flex justify-between">
-                    <select
-                      className="h-9 text-md rounded-sm  font-medium bg-gray-100 border-2 border-gray-300"
-                      name="birthday"
-                      required
-                    >
-                      {BirthMonth.map((month) => (
-                        <option key={month.id} value={month.name}>
-                          {month.name}
-                        </option>
-                      ))}
-                    </select>
-                    <select
-                      className="h-9 text-md w-28 rounded-sm font-medium bg-gray-100 border-2 border-gray-300"
-                      name="birthday"
-                      required
-                    >
-                      {Birthday.map((day) => (
-                        <option key={day.id} value={day.name}>
-                          {day.name}
-                        </option>
-                      ))}
-                    </select>
-                    <select
-                      className="h-9 w-28 text-md rounded-sm font-medium bg-gray-100 border-2 border-gray-300"
-                      name="birthday"
-                      required
-                    >
-                      {BirthYear.map((year) => (
-                        <option key={year.id} value={year.name}>
-                          {year.name}
-                        </option>
-                      ))}
-                    </select>
+                  <div>
+                    <label className="text-xs text-gray-500">Birthday ?</label>
+                    <div className="flex justify-between">
+                      <select
+                        className="h-9 text-md rounded-sm  font-medium bg-gray-100 border-2 border-gray-300"
+                        name="birthMonth"
+                        value={SignupFormData.birthMonth}
+                        onChange={handleInputChangeSignUp}
+                      >
+                        {BirthMonth.map((month) => (
+                          <option key={month.id} value={month.name}>
+                            {month.name}
+                          </option>
+                        ))}
+                      </select>
+                      <select
+                        className="h-9 text-md w-28 rounded-sm font-medium bg-gray-100 border-2 border-gray-300"
+                        name="birthday"
+                        value={SignupFormData.birthday}
+                        onChange={handleInputChangeSignUp}
+                      >
+                        {Birthday.map((day) => (
+                          <option key={day.id} value={day.name}>
+                            {day.name}
+                          </option>
+                        ))}
+                      </select>
+                      <select
+                        className="h-9 w-28 text-md rounded-sm font-medium bg-gray-100 border-2 border-gray-300"
+                        name="birthYear"
+                        value={SignupFormData.birthYear}
+                        onChange={handleInputChangeSignUp}
+                      >
+                        {BirthYear.map((year) => (
+                          <option key={year.id} value={year.name}>
+                            {year.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
-                </div>
 
-                <div>
-                  <label className="text-xs text-gray-500">Gender</label>
-                  <div className="flex justify-between gap-3">
-                    <section className="w-28 h-9 font-medium bg-white flex items-center border-2 px-2">
-                      <label className="flex items-center cursor-pointer w-full">
-                        <input
-                          type="radio"
-                          name="gender"
-                          value="male"
-                          className="mr-2"
-                        />
-                        Male
-                      </label>
-                    </section>
-                    <section className=" w-28 h-9 font-medium bg-white flex items-center border-2 px-2">
-                      <label className="flex items-center cursor-pointer w-full">
-                        <input
-                          type="radio"
-                          name="gender"
-                          value="female"
-                          className="mr-2"
-                        />
-                        Female
-                      </label>
-                    </section>
-                    <section className=" w-28 h-9 font-medium bg-white flex justify-between  items-center border-2 px-2">
-                      <label className="flex items-center cursor-pointer">
-                        <input
-                          type="radio"
-                          name="gender"
-                          value="other"
-                          className="form-radio h-3 w-3 text-blue-600 border-gray-300 mr-2"
-                        />
-                        Other
-                      </label>
-                    </section>
+                  <div>
+                    <label className="text-xs text-gray-500">Gender</label>
+                    <div className="flex justify-between gap-3">
+                      <section className="w-28 h-9 font-medium bg-white flex items-center border-2 px-2">
+                        <label className="flex items-center cursor-pointer w-full">
+                          <input
+                            type="radio"
+                            name="gender"
+                            className="mr-2"
+                            value="male"
+                            checked={SignupFormData.gender === "male"}
+                            onChange={handleInputChangeSignUp}
+                          />
+                          Male
+                        </label>
+                      </section>
+                      <section className=" w-28 h-9 font-medium bg-white flex items-center border-2 px-2">
+                        <label className="flex items-center cursor-pointer w-full">
+                          <input
+                            type="radio"
+                            name="gender"
+                            value="female"
+                            className="mr-2"
+                            checked={SignupFormData.gender === "female"}
+                            onChange={handleInputChangeSignUp}
+                          />
+                          Female
+                        </label>
+                      </section>
+                      <section className=" w-28 h-9 font-medium bg-white flex justify-between  items-center border-2 px-2">
+                        <label className="flex items-center cursor-pointer">
+                          <input
+                            type="radio"
+                            name="gender"
+                            value="other"
+                            checked={SignupFormData.gender === "other"}
+                            className="form-radio h-3 w-3 text-blue-600 border-gray-300 mr-2"
+                            onChange={handleInputChangeSignUp}
+                          />
+                          Other
+                        </label>
+                      </section>
+                    </div>
+                    <div className="mt-4">
+                      <p className="text-xs text-gray-500">
+                        People who use our service may have uploaded your
+                        contact information to Facebook
+                        <span className="text-blue-600">Learn more</span>
+                      </p>
+                      <p className="text-xs text-gray-500 mt-3">
+                        By clicking Sign Up, you agree to our{" "}
+                        <span className="text-blue-600">Terms</span>
+                        <span className="text-blue-600">
+                          Privacy Policy
+                        </span>{" "}
+                        and
+                        <span className="text-blue-600"> Cookies Policy</span>
+                        You may receive SMS Notifications from us and can opt
+                        out any time.
+                      </p>
+                    </div>
                   </div>
-                  <div className="mt-4">
-                    <p className="text-xs text-gray-500">
-                      People who use our service may have uploaded your contact
-                      information to Facebook
-                      <span className="text-blue-600">Learn more</span>
-                    </p>
-                    <p className="text-xs text-gray-500 mt-3">
-                      By clicking Sign Up, you agree to our{" "}
-                      <span className="text-blue-600">Terms</span>
-                      <span className="text-blue-600">Privacy Policy</span> and
-                      <span className="text-blue-600"> Cookies Policy</span>
-                      You may receive SMS Notifications from us and can opt out
-                      any time.
-                    </p>
+                  <div>
+                    <Button
+                      type="submit"
+                      className="w-full bg-blue-600 hover:bg-blue-500 h-12 text-xl font-bold"
+                    >
+                      Sign Up
+                    </Button>
                   </div>
-                </div>
-                <div>
-                  <Button
-                    type="submit"
-                    className="w-full bg-blue-600 hover:bg-blue-500 h-12 text-xl font-bold"
-                  >
-                    Sign Up
-                  </Button>
-                </div>
+                </form>
               </div>
-            </div>
+            </>
           </div>
         </div>
       )}
