@@ -18,8 +18,8 @@ import {
   BsEmojiSurprise,
 } from "react-icons/bs";
 
-const image =
-  "https://scontent.fktm21-1.fna.fbcdn.net/v/t39.30808-6/360085714_1616525928846282_1033599316022958055_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_ohc=JdGzIocqStMQ7kNvgHg8S1K&_nc_ht=scontent.fktm21-1.fna&oh=00_AYA22vqGtbr0epTxeqYGWikrVFMChJACT1sh_ehDN1oa8Q&oe=66E5963D";
+
+  
 
 const userRightsidemoreiconData = [
   {
@@ -85,6 +85,9 @@ const reactions = [
 ];
 
 export default function Post() {
+  // const image = "googlephoto.jpg"
+  const image = "https://scontent.fktm21-1.fna.fbcdn.net/v/t39.30808-6/461730853_122173959374176074_4680864536819864568_n.jpg?_nc_cat=1&ccb=1-7&_nc_sid=aa7b47&_nc_ohc=3gwI2Erm-OEQ7kNvgF5duCZ&_nc_ht=scontent.fktm21-1.fna&_nc_gid=A7iH4WDCmqPCliyg5ppr3vg&oh=00_AYDf10RZfnD3oQNnXVvvnYombQAp7jvR7LPOcug9shSxPA&oe=6705CC4D"
+  const pp = "https://scontent.fktm21-1.fna.fbcdn.net/v/t1.6435-9/123201081_102426248343348_4913614110525775662_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=INpPHLNzRxsQ7kNvgFfEpOe&_nc_ht=scontent.fktm21-1.fna&_nc_gid=AIv0ne_0f6yB9O3-R62TIW5&oh=00_AYCGxLvUGaf7vP98KLj2ohJnmxhrleYqJlMm48TqX3Rm4A&oe=672784EC"
   const [selectedReaction, setSelectedReaction] = useState(null);
 
   const handleReaction = (reaction) => {
@@ -96,11 +99,11 @@ export default function Post() {
       <div className="flex justify-between items-center max-w-3xl">
         <div className="flex gap-2 items-center">
           <Avatar>
-            <AvatarImage src={image} alt="profile pp" />
+            <AvatarImage src={pp}  alt="profile pp" />
             <AvatarFallback>K</AvatarFallback>
           </Avatar>
           <span>
-            <p className="font-semibold text-md">Karuna Karki</p>
+            <p className="font-semibold text-md">Jiban Pandey</p>
             <p className="text-sm text-gray-500">2 hours ago</p>
           </span>
         </div>
@@ -131,7 +134,7 @@ export default function Post() {
         </div>
       </div>
       <div>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque</p>
+        <p>welcome to my facebook clone</p>
       </div>
       <img src={image} alt="post" className="w-full h-96 object-cover" />
       <div className="flex justify-between my-3">

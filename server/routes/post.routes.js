@@ -11,7 +11,7 @@ const PostRouter = express.Router();
 PostRouter.post(
   "/create-post",
   isAuthenticated,
-  upload.single("image"),
+  upload.array("image", 5),
   createPost
 );
 PostRouter.get("/show-all-post", isAuthenticated, getAllPosts);

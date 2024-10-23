@@ -27,6 +27,7 @@ app.use("/facebook/api/v1/post", PostRouter);
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
 mongoose
   .connect(MONGODB_URI)
   .then(() => {

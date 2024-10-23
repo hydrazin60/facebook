@@ -48,10 +48,11 @@ const postSchema = new mongoose.Schema(
       },
     },
     image: {
-      type: String,
+      type: [String],
       required: true,
     },
-    authorId: { // Consistent naming
+    authorId: {
+      // Consistent naming
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,

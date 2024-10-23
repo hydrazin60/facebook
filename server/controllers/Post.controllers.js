@@ -6,7 +6,7 @@ import Comment from "../models/comment.model.js";
 export const createPost = async (req, res) => {
   try {
     const { caption } = req.body;
-    const image = req.file;
+    const images = req.files || [req.file];
     const authorId = req.user;
     const authorUser = await User.findById(authorId);
     if (!authorUser) {
@@ -16,24 +16,31 @@ export const createPost = async (req, res) => {
         success: false,
       });
     }
-    if (!image) {
+    if (!images || images.length === 0) {
       return res.status(400).json({
-        message: "Image is required",
+        message: " At least one Image is required",
         error: true,
       });
     }
-    const optimizedImageBuffer = await sharp(image.buffer)
-      .resize({ width: 800, height: 800, fit: "inside" })
-      .toFormat("jpeg", { quality: 90 })
-      .toBuffer();
+    const imageUrls = [];
 
-    const fileUri = `data:image/jpeg;base64,${optimizedImageBuffer.toString(
-      "base64"
-    )}`;
-    const cloudResponse = await cloudinary.uploader.upload(fileUri);
+    for (let image of images) {
+      const optimizedImageBuffer = await sharp(image.buffer)
+        .resize({ width: 800, height: 800, fit: "inside" })
+        .toFormat("jpeg", { quality: 90 })
+        .toBuffer();
+
+      const fileUri = `data:image/jpeg;base64,${optimizedImageBuffer.toString(
+        "base64"
+      )}`;
+
+      const cloudResponse = await cloudinary.uploader.upload(fileUri);
+      imageUrls.push(cloudResponse.secure_url); // Add URL to array
+    }
+
     const post = await Post.create({
       caption,
-      image: cloudResponse.secure_url,
+      image: imageUrls,
       authorId,
     });
     await User.findByIdAndUpdate(authorId, {
