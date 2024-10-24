@@ -79,7 +79,7 @@ export default function Header() {
   };
 
   return (
-    <div className="w-full bg-white shadow-md h-14 flex items-center justify-between px-4 fixed top-0 left-0 z-10">
+    <div className="w-full bg-slate-100 shadow-md h-14 flex items-center justify-between px-4 fixed top-0 left-0 z-10">
       <div className="flex items-center space-x-2 w-[30%]">
         <FaFacebook className="text-5xl text-blue-600" />
         <input

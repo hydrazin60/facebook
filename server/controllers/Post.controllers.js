@@ -3,6 +3,8 @@ import Post from "../models/post.model.js";
 import cloudinary from "../utils/cloudinary.js";
 import User from "../models/user.models.js";
 import Comment from "../models/comment.model.js";
+
+
 // export const createPost = async (req, res) => {
 //   try {
 //     const { caption } = req.body;
@@ -292,6 +294,78 @@ export const getUserPosts = async (req, res) => {
     console.log(error.message);
     return res.status(500).json({
       message: `getUserPosts error: ${error.message}`,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+export const LikePostAndUnlike = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const userId = req.user;
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({
+        message: "Post not found",
+        error: true,
+        success: false,
+      });
+    }
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+        error: true,
+        success: false,
+      });
+    }
+
+    if (postId === userId) {
+      return res.status(400).json({
+        message: "Invalid credentials",
+        error: true,
+        success: false,
+      });
+    }
+
+    const isPostLiked = post.likes.includes(userId);
+    if (isPostLiked) {
+      await Promise.all([
+        Post.findByIdAndUpdate(postId, {
+          $pull: { likes: userId },
+        }),
+        User.findByIdAndUpdate(userId, {
+          $pull: { likes: postId },
+        }),
+      ]);
+
+      return res.status(200).json({
+        message: "Post unliked successfully",
+        error: false,
+        success: true,
+      });
+    }
+
+    if (!isPostLiked) {
+      await Promise.all([
+        Post.findByIdAndUpdate(postId, {
+          $push: { likes: userId },
+        }),
+        User.findByIdAndUpdate(userId, {
+          $push: { likes: postId },
+        }),
+      ]);
+      return res.status(200).json({
+        message: "Post liked successfully",
+        error: false,
+        success: true,
+      });
+    }
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({
+      message: `LikePostAndUnlike error: ${error.message}`,
       error: true,
       success: false,
     });

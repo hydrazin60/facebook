@@ -69,7 +69,7 @@ export default function LeftSidebar() {
   const { user } = useSelector((state) => state.auth);
 
   return (
-    <div className="w-[28%] h-[100vh] fixed top-10 mt-4 left-0">
+    <div className="w-[30%] h-[100vh] bg-slate-50 fixed top-10 mt-4 left-0">
       <div className="p-4 w-[80%] h-full flex flex-col">
         {leftSidebarIcons.map((item) => (
           <div

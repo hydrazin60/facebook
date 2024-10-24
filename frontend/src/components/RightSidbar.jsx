@@ -14,7 +14,7 @@ const karuna =
 
 export default function RightSidbar() {
   return (
-    <div className="w-[25%] h-[100vh] fixed top-10 right-0 p-10 ">
+    <div className="w-[20%] h-[100vh] fixed top-10 right-0 p-10 bg-slate-50 ">
       <div className="flex flex-col gap-4">
         <div className="flex justify-between">
           <div>
