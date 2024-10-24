@@ -38,8 +38,45 @@ export default function PostCreate({ open, onClose }) {
     }
   };
 
+  // const handleSubmit = async () => {
+  //   try {
+  //     if (formData.images.length === 0) {
+  //       toast.error("Please select at least one image.");
+  //       return;
+  //     }
+  //     if (formData.images.length > 4) {
+  //       toast.error("You can only select up to 4 images.");
+  //       return;
+  //     }
+  //     const res = await axios.post(
+  //       "http://localhost:4000/facebook/api/v1/post/create-post",
+  //       formData,
+  //       {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //         },
+  //         withCredentials: true,
+  //       }
+  //     );
+
+  //     if (res.data.success) {
+  //       toast.success(res.data.message);
+  //       onClose();
+  //     }
+
+  //     if (!res.data.success) {
+  //       toast.error(res.data.message);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //     toast.error(error.response.data.message);
+  //   }
+  // };
+
   const handleSubmit = async () => {
     try {
+      console.log("Form data:", formData);
+      
       if (formData.images.length === 0) {
         toast.error("Please select at least one image.");
         return;
@@ -48,9 +85,20 @@ export default function PostCreate({ open, onClose }) {
         toast.error("You can only select up to 4 images.");
         return;
       }
+  
+      // Create FormData object
+      const formDataToSubmit = new FormData();
+      formDataToSubmit.append("caption", formData.caption);
+  
+      // Append each image file to FormData
+      formData.images.forEach((image, index) => {
+        formDataToSubmit.append(`images`, image);
+      });
+  
+      // Post to backend
       const res = await axios.post(
         "http://localhost:4000/facebook/api/v1/post/create-post",
-        formData,
+        formDataToSubmit,
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -58,20 +106,21 @@ export default function PostCreate({ open, onClose }) {
           withCredentials: true,
         }
       );
-
+  
       if (res.data.success) {
         toast.success(res.data.message);
-        onClose();
-      }
-
-      if (!res.data.success) {
+        onClose(); // Close modal on success
+      } else {
         toast.error(res.data.message);
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.response.data.message);
+      console.log("Error in submission:", error);
+      toast.error(
+        error.response?.data?.message || "An error occurred during submission."
+      );
     }
   };
+  
 
   return (
     <div>

@@ -56,7 +56,7 @@ export default function Home() {
       <div>
         {[1, 2, 3, 4, 5].map((data) => (
           <>
-            <POsts key={data} />
+            <POsts key={data}  />
           </>
         ))}
       </div>
