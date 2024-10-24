@@ -182,8 +182,6 @@ export const createPost = async (req, res) => {
         .toFormat("jpeg", { quality: 90 })
         .toBuffer();
 
-      console.log("optimizedImageBuffer", optimizedImageBuffer);
-
       const cloudResponse = await cloudinary.uploader.upload(
         `data:image/jpeg;base64,${optimizedImageBuffer.toString("base64")}`,
         {

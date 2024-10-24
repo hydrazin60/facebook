@@ -5,9 +5,13 @@ import { Button } from "./ui/button";
 import { toast } from "sonner";
 import { LogIn } from "lucide-react";
 import axios from "axios";
+import { FaSpinner } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 export default function PostCreate({ open, onClose }) {
+  const { user } = useSelector((state) => state.auth);
   const fileInputRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [filePreviews, setFilePreviews] = useState([]);
   const [formData, setFormData] = useState({
     caption: "",
@@ -75,8 +79,7 @@ export default function PostCreate({ open, onClose }) {
 
   const handleSubmit = async () => {
     try {
-      console.log("Form data:", formData);
-      
+      setIsLoading(true);
       if (formData.images.length === 0) {
         toast.error("Please select at least one image.");
         return;
@@ -85,17 +88,14 @@ export default function PostCreate({ open, onClose }) {
         toast.error("You can only select up to 4 images.");
         return;
       }
-  
-      // Create FormData object
+
       const formDataToSubmit = new FormData();
       formDataToSubmit.append("caption", formData.caption);
-  
-      // Append each image file to FormData
+
       formData.images.forEach((image, index) => {
         formDataToSubmit.append(`images`, image);
       });
-  
-      // Post to backend
+
       const res = await axios.post(
         "http://localhost:4000/facebook/api/v1/post/create-post",
         formDataToSubmit,
@@ -106,10 +106,10 @@ export default function PostCreate({ open, onClose }) {
           withCredentials: true,
         }
       );
-  
+
       if (res.data.success) {
         toast.success(res.data.message);
-        onClose(); // Close modal on success
+        onClose();
       } else {
         toast.error(res.data.message);
       }
@@ -118,9 +118,10 @@ export default function PostCreate({ open, onClose }) {
       toast.error(
         error.response?.data?.message || "An error occurred during submission."
       );
+    } finally {
+      setIsLoading(false);
     }
   };
-  
 
   return (
     <div>
@@ -134,13 +135,13 @@ export default function PostCreate({ open, onClose }) {
               <div className="w-full h-auto flex flex-col gap-3">
                 <div className="w-full flex gap-2">
                   <img
-                    src="https://scontent.fktm21-1.fna.fbcdn.net/v/t39.30808-6/292694884_729606568152974_711651807545817504_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_ohc=c7CWYlOYpDIQ7kNvgGWrmDB&_nc_ht=scontent.fktm21-1.fna&_nc_gid=AvL87gV9RY0cDuj9353rW96&oh=00_AYC9XXGItEWMXmKK_4cQMRAJa9l0CcV9xFwo7s0rUMWX9g&oe=671E2964"
+                    src={user.profilePic}
                     alt="Profile"
                     className="h-11 w-11 cursor-pointer rounded-full hover:border hover:border-zinc-500 overflow-hidden object-cover"
                   />
                   <div>
                     <p className="text-md font-semibold text-zinc-700">
-                      Jiban Pandey
+                      {user.firstName + " " + user.lastName}
                     </p>
                   </div>
                 </div>
@@ -210,7 +211,13 @@ export default function PostCreate({ open, onClose }) {
                 onClick={handleSubmit}
                 className="bg-blue-600 text-white text-lg hover:bg-blue-500 hover:text-white"
               >
-                Post
+                {
+                  isLoading ? (
+                    <div className="w-full h-full flex gap-4 items-center justify-center">
+                     <p>Uploading</p>  <FaSpinner className="animate-spin" />
+                    </div>
+                  ) : "Post"
+                }
               </Button>
             </div>
           </section>
