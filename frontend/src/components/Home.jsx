@@ -4,22 +4,34 @@ import POsts from "./POsts";
 import { RiLiveFill } from "react-icons/ri";
 import { MdPhotoSizeSelectActual } from "react-icons/md";
 import { BsCameraReelsFill } from "react-icons/bs";
+import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
+import PostCreate from "./PostCreate";
+import { useSelector } from "react-redux";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 export default function Home() {
+  const { user } = useSelector((state) => state.auth);
+
+  const [isPostCreateDialogOpen, setIsPostCreateDialogOpen] =
+    React.useState(false);
   return (
-    <div className="mt-16 w-[35%] mx-auto flex flex-col gap-4">
-      <section className="h-32 rounded-lg w-full p-2 border-2 bg-white shadow-lg ">
+    <div className=" relative mt-16 w-[35%] mx-auto flex flex-col gap-4">
+      <section className="  h-32 rounded-lg w-full p-2 border-2 bg-white shadow-lg ">
         <div className="h-1/2  border-b border-zint-400 flex justify-between items-center">
-          <img
-            src="https://scontent.fktm21-1.fna.fbcdn.net/v/t39.30808-6/292694884_729606568152974_711651807545817504_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_ohc=c7CWYlOYpDIQ7kNvgGWrmDB&_nc_ht=scontent.fktm21-1.fna&_nc_gid=AvL87gV9RY0cDuj9353rW96&oh=00_AYC9XXGItEWMXmKK_4cQMRAJa9l0CcV9xFwo7s0rUMWX9g&oe=671E2964"
-            alt="pp"
-            className="h-11 w-11 cursor-pointer rounded-full hover:border hover:border-zinc-500 overflow-hidden object-cover"
-          />
+          <Avatar className=" cursor-pointer">
+            <AvatarImage src={user.profilePic} alt="Profile" />
+            <AvatarFallback>
+              {user.firstName[0] + "." + user.lastName[0]}
+            </AvatarFallback>
+          </Avatar>
           <input
             type="text"
-            placeholder="What's on your mind, Pandey?"
+            placeholder={`What's on your mind, ${
+              user ? user.lastName : "" || user ? user.firstName : ""
+            }?`}
             className="w-[90%] cursor-pointer h-10 bg-transparent focus:outline-none px-4 placeholder-zinc-400 placeholder:font-[400] bg-zinc-100 hover:bg-zinc-200 rounded-full"
             readOnly
+            onClick={() => setIsPostCreateDialogOpen(true)}
           />
         </div>
         <div className="h-1/2 flex items-center    ">
@@ -37,6 +49,10 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <PostCreate
+        open={isPostCreateDialogOpen}
+        onClose={() => setIsPostCreateDialogOpen(false)}
+      />
       <div>
         {[1, 2, 3, 4, 5].map((data) => (
           <>

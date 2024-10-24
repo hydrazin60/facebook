@@ -5,6 +5,8 @@ import { toast } from "sonner";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { MdCancel } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import { setAuthUser } from "@/redux/authSlice";
 
 const footerData = [
   { id: "1", name: "English (UK)" },
@@ -158,6 +160,7 @@ const BirthYear = [
 ];
 
 export default function SignIn() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -197,6 +200,8 @@ export default function SignIn() {
       );
 
       if (res.data.success) {
+        dispatch(setAuthUser(res.data.userData));
+
         navigate("/");
         toast.success(res.data.message || "Successfully logged in!", {
           position: "top-right",

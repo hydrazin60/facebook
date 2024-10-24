@@ -24,6 +24,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import axios from "axios";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const profileDialogBoxIcons = [
   {
@@ -45,6 +46,8 @@ const nisan =
   "https://scontent.fktm21-1.fna.fbcdn.net/v/t1.6435-9/123201081_102426248343348_4913614110525775662_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=4kag0dfwACQQ7kNvgGxwyrl&_nc_ht=scontent.fktm21-1.fna&oh=00_AYCU3B6cPKwu2ESvk1Vf4FVNaGUgcA-lYkXdHAAM64EKag&oe=6701F22C";
 
 export default function Header() {
+  const { user } = useSelector((state) => state.auth);
+
   const navigate = useNavigate();
 
   const LogOutHandler = async () => {
@@ -74,6 +77,7 @@ export default function Header() {
       }
     }
   };
+
   return (
     <div className="w-full bg-white shadow-md h-14 flex items-center justify-between px-4 fixed top-0 left-0 z-10">
       <div className="flex items-center space-x-2 w-[30%]">
@@ -117,7 +121,21 @@ export default function Header() {
         <Dialog>
           <DialogTrigger asChild>
             <span className="cursor-pointer flex items-center justify-center hover:bg-gray-200 p-2 bg-gray-300 rounded-full">
-              <RxAvatar className="text-xl" />
+              {user.profilePic ? (
+                <>
+                  <img
+                    src={user.profilePic}
+                    alt="Profile"
+                    className="w-7 h-7 rounded-full"
+                  />
+                </>
+              ) : (
+                <>
+                  <span className="w-6 h-6 rounded-full flex items-center justify-center font-semibold text-lg">
+                    {user.firstName[0] + "." + user.lastName[0]}
+                  </span>
+                </>
+              )}
             </span>
           </DialogTrigger>
           <DialogContent>
@@ -125,10 +143,12 @@ export default function Header() {
               <div className="flex gap-2 flex-col shadow-md p-3 mb-2">
                 <div className="flex gap-2 items-center border-b-2 border-gray-300 pb-4">
                   <Avatar>
-                    <AvatarImage src={nisan} alt="Profile" />
-                    <AvatarFallback>N</AvatarFallback>
+                    <AvatarImage src={user.profilePic} alt="Profile" />
+                    <AvatarFallback>
+                      {user.firstName[0] + "." + user.lastName[0]}
+                    </AvatarFallback>
                   </Avatar>
-                  <span className="text-lg font-medium">Jiban Pandey</span>
+                  <span className="text-lg font-medium">{user.firstName} {user.lastName}</span>
                 </div>
                 <div>
                   <p className="text-blue-500 font-medium">See all profiles</p>
