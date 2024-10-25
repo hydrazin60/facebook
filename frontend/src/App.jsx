@@ -22,7 +22,7 @@ export default function App() {
           }
         />
         <Route
-          path="/:id"
+          path="/profile/:id"
           element={
             <div>
               <Header />
@@ -30,6 +30,7 @@ export default function App() {
             </div>
           }
         />
+
         <Route path="/sign-in" element={<SignIn />} />
       </Routes>
     </BrowserRouter>

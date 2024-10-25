@@ -6,11 +6,11 @@ import { FaChevronDown } from "react-icons/fa6";
 import { BsThreeDots } from "react-icons/bs";
 import { FaSortDown } from "react-icons/fa";
 import { FaFacebookMessenger } from "react-icons/fa6";
-
+import UserPosts from "@/components/userProfile/UserPosts";
 export default function userProfile() {
   return (
-    <section className="w-full h-full flex flex-col overflow-y-scroll  ">
-      <div className="w-full h-[90vh]  flex flex-col items-center shadow-md shadow-zinc-200">
+    <section className="w-full h-full flex flex-col overflow-y-scroll left-sidebar     ">
+      <div className="w-full h-[90vh]  flex flex-col items-center   ">
         <div className="w-[80%] h-[65%] bg-gray-200 rounded-lg"></div>
         <div className="w-[80%] h-[35%] flex flex-col  ">
           <div className=" w-full  flex py-4   justify-between border-b border-zinc-300  ">
@@ -61,7 +61,7 @@ export default function userProfile() {
           <div className="w-full py-4 h-[30%] flex justify-between items-center">
             <div className="flex  items-center  text-md text-zinc-500 font-semibold">
               <Button className=" hover:bg-zinc-300 text-zinc-600 bg-white   text-[0.973rem] font-semibold ">
-                <p>Photo</p>
+                <p> Posts</p>
               </Button>
               <Button className=" hover:bg-zinc-300 text-zinc-600 bg-white   text-[0.973rem] font-semibold ">
                 <p>ABout</p>
@@ -91,8 +91,8 @@ export default function userProfile() {
           </div>
         </div>
       </div>
-      <div>
-         
+      <div className="bg-zinc-50">
+        <UserPosts />
       </div>
     </section>
   );
