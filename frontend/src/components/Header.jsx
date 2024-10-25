@@ -110,28 +110,28 @@ export default function Header() {
 
       <div className="flex items-center space-x-3 w-[30%] justify-end">
         <span className="cursor-pointer flex items-center justify-center hover:bg-gray-200 p-2 bg-gray-300 rounded-full">
-          <MdMoreVert className="text-xl" />
+          <MdMoreVert className="text-2xl" />
         </span>
         <span className="cursor-pointer flex items-center justify-center hover:bg-gray-200 p-2 bg-gray-300 rounded-full">
-          <IoNotifications className="text-xl" />
+          <IoNotifications className="text-2xl" />
         </span>
         <span className="cursor-pointer flex items-center justify-center hover:bg-gray-200 p-2 bg-gray-300 rounded-full">
-          <FaFacebookMessenger className="text-xl" />
+          <FaFacebookMessenger className="text-2xl" />
         </span>
         <Dialog>
           <DialogTrigger asChild>
-            <span className="cursor-pointer flex items-center justify-center hover:bg-gray-200 p-2 bg-gray-300 rounded-full">
+            <span>
               {user.profilePic !== null ? (
                 <>
                   <img
                     src={user.profilePic}
                     alt="Profile"
-                    className="w-7 h-7 rounded-full"
+                    className="w-10 h-10 rounded-full"
                   />
                 </>
               ) : (
                 <>
-                  <span className="w-6 h-6 rounded-full flex items-center justify-center font-semibold text-lg">
+                  <span className="w-7 h-7 rounded-full flex items-center justify-center font-semibold text-lg">
                     {user.firstName[0] + "." + user.lastName[0]}
                   </span>
                 </>

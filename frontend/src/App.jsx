@@ -5,7 +5,7 @@ import LeftSidbar from "./components/LeftSidbar.jsx";
 import Home from "./components/Home.jsx";
 import RightSidbar from "./components/RightSidbar.jsx";
 import Header from "./components/Header.jsx";
-
+import UserProfile from "./page/UserProfile.jsx";
 export default function App() {
   return (
     <BrowserRouter>
@@ -18,6 +18,15 @@ export default function App() {
               <LeftSidbar />
               <Home />
               <RightSidbar />
+            </div>
+          }
+        />
+        <Route
+          path="/:id"
+          element={
+            <div>
+              <Header />
+              <UserProfile />
             </div>
           }
         />

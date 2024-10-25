@@ -205,7 +205,8 @@ export default function Post({ allPost }) {
           </div>
 
           <p className="text-sm text-gray-500">
-            Liked by {allPost.likes.length} people
+            {allPost.likes.includes(user._id) ? "you and others " : " "}
+            {allPost.likes.length} people liked
           </p>
         </div>
         <div className="flex text-gray-500">
