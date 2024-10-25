@@ -148,7 +148,9 @@ export default function Header() {
                       {user.firstName[0] + "." + user.lastName[0]}
                     </AvatarFallback>
                   </Avatar>
-                  <span className="text-lg font-medium">{user.firstName} {user.lastName}</span>
+                  <span className="text-lg font-medium">
+                    {user.firstName} {user.lastName}
+                  </span>
                 </div>
                 <div>
                   <p className="text-blue-500 font-medium">See all profiles</p>

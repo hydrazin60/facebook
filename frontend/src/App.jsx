@@ -9,13 +9,12 @@ import Header from "./components/Header.jsx";
 export default function App() {
   return (
     <BrowserRouter>
-      
       <Routes>
         <Route
           path="/"
           element={
-            <div className="flex justify-between">
-               <Header />
+            <div className="flex justify-between ">
+              <Header />
               <LeftSidbar />
               <Home />
               <RightSidbar />
