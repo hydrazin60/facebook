@@ -90,11 +90,12 @@ import { MdPhotoSizeSelectActual } from "react-icons/md";
 import { BsCameraReelsFill } from "react-icons/bs";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import PostCreate from "./PostCreate";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import axios from "axios";
 
 export default function Home() {
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const [isPostCreateDialogOpen, setIsPostCreateDialogOpen] = useState(false);
   const [totalFBpost, setTotalFBpost] = useState([]);

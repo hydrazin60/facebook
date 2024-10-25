@@ -121,7 +121,7 @@ export default function Header() {
         <Dialog>
           <DialogTrigger asChild>
             <span className="cursor-pointer flex items-center justify-center hover:bg-gray-200 p-2 bg-gray-300 rounded-full">
-              {user.profilePic ? (
+              {user.profilePic !== null ? (
                 <>
                   <img
                     src={user.profilePic}

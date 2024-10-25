@@ -6,9 +6,11 @@ import { toast } from "sonner";
 import { LogIn } from "lucide-react";
 import axios from "axios";
 import { FaSpinner } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { createPost } from "@/redux/postSlice";
 
 export default function PostCreate({ open, onClose }) {
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const fileInputRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -42,25 +44,78 @@ export default function PostCreate({ open, onClose }) {
     }
   };
 
+  // const handleSubmit = async () => {
+  //   try {
+  //     setIsLoading(true);
+  //     if (formData.images.length === 0) {
+  //       toast.error("Please select at least one image.");
+  //       return;
+  //     }
+  //     if (formData.images.length > 4) {
+  //       toast.error("You can only select up to 4 images.");
+  //       return;
+  //     }
+
+  //     const formDataToSubmit = new FormData();
+  //     formDataToSubmit.append("caption", formData.caption);
+
+  //     formData.images.forEach((image, index) => {
+  //       formDataToSubmit.append(`images`, image);
+  //     });
+
+  //     const res = await axios.post(
+  //       "http://localhost:4000/facebook/api/v1/post/create-post",
+  //       formDataToSubmit,
+  //       {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //         },
+  //         withCredentials: true,
+  //       }
+  //     );
+
+  //     if (res.data.success) {
+  //       dispatch(createPost(res.data.data));
+  //       toast.success(res.data.message);
+  //       onClose();
+  //     } else {
+  //       toast.error(res.data.message);
+  //     }
+  //   } catch (error) {
+  //     console.log("Error in submission:", error);
+  //     toast.error(
+  //       error.response?.data?.message || "An error occurred during submission."
+  //     );
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
+
+      // Image validation
       if (formData.images.length === 0) {
+        setIsLoading(false); // Reset loading state before returning
         toast.error("Please select at least one image.");
         return;
       }
       if (formData.images.length > 4) {
+        setIsLoading(false); // Reset loading state before returning
         toast.error("You can only select up to 4 images.");
         return;
       }
 
+      // Prepare form data
       const formDataToSubmit = new FormData();
       formDataToSubmit.append("caption", formData.caption);
 
-      formData.images.forEach((image, index) => {
-        formDataToSubmit.append(`images`, image);
+      formData.images.forEach((image) => {
+        formDataToSubmit.append("images", image); // Same key for multiple files
       });
 
+      // API request
       const res = await axios.post(
         "http://localhost:4000/facebook/api/v1/post/create-post",
         formDataToSubmit,
@@ -72,19 +127,20 @@ export default function PostCreate({ open, onClose }) {
         }
       );
 
+      // Handle success response
       if (res.data.success) {
         toast.success(res.data.message);
-        onClose();
+        onClose(); // Assuming this closes the modal or form
       } else {
-        toast.error(res.data.message);
+        toast.error(res.data.message); // Backend error response
       }
     } catch (error) {
-      console.log("Error in submission:", error);
+      console.error("Error in submission:", error);
       toast.error(
         error.response?.data?.message || "An error occurred during submission."
       );
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); // Reset loading state after try/catch
     }
   };
 

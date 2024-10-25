@@ -12,6 +12,8 @@ import { FaRegComment } from "react-icons/fa";
 import { FaRegShareSquare } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import { RxCross2 } from "react-icons/rx";
+import { AiFillLike } from "react-icons/ai";
+import { FcLike } from "react-icons/fc";
 
 import {
   BsEmojiLaughing,
@@ -20,6 +22,8 @@ import {
   BsEmojiSurprise,
 } from "react-icons/bs";
 import axios from "axios";
+import { toast } from "sonner";
+import { useSelector } from "react-redux";
 
 const userRightsidemoreiconData = [
   {
@@ -85,10 +89,29 @@ const reactions = [
 ];
 
 export default function Post({ allPost }) {
-  const [selectedReaction, setSelectedReaction] = useState(null);
+  const { user } = useSelector((state) => state.auth);
 
-  const handleReaction = (reaction) => {
-    setSelectedReaction(reaction);
+  const [liked, setLiked] = useState(false);
+  console.log(user._id, allPost.likes);
+
+  const LikePost = async () => {
+    setLiked(!liked);
+
+    try {
+      const res = await axios.get(
+        `http://localhost:4000/facebook/api/v1/post/liked-post/${allPost._id}`,
+        { withCredentials: true }
+      );
+
+      if (res.data.success) {
+        toast.success(res.data.message);
+      } else {
+        toast.error(res.data.message);
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error(err.response.data.message);
+    }
   };
 
   return (
@@ -172,15 +195,15 @@ export default function Post({ allPost }) {
 
       <div className="flex justify-between my-3">
         <div className="flex gap-2">
-          {reactions.map((reaction) => (
-            <div
-              key={reaction.id}
-              onClick={() => handleReaction(reaction)}
-              className="flex items-center cursor-pointer hover:scale-110 transition-transform"
-            >
-              <span className="text-2xl z-10">{reaction.icon}</span>
-            </div>
-          ))}
+          <div className="flex items-center cursor-pointer  ">
+            <span className="text-2xl z-10">
+              <AiFillLike className="text-blue-500 hover:scale-110 transition-transform" />
+            </span>
+            <span className="text-2xl z-10">
+              <FcLike className="text-red-500 hover:scale-110 transition-transform" />
+            </span>
+          </div>
+
           <p className="text-sm text-gray-500">
             Liked by {allPost.likes.length} people
           </p>
@@ -191,20 +214,19 @@ export default function Post({ allPost }) {
         </div>
       </div>
 
-      {selectedReaction && (
-        <p className="mt-2 text-gray-700">
-          You reacted with {selectedReaction.name}!
-        </p>
-      )}
-
-      <hr className="my-3 border-gray-500" />
-
-      {/* Like, Comment, Share Actions */}
+      <hr className="my-3 border-gray-300" />
       <div className="flex justify-between mx-4">
-        <span className="flex gap-2">
-          <FaRegThumbsUp className="text-gray-500 text-2xl" />
-          <label className="text-gray-500">Like</label>
-        </span>
+        {allPost.likes.includes(user._id) ? (
+          <span className="flex gap-2" onClick={LikePost}>
+            <AiFillLike className="text-blue-500 text-2xl" />
+            <label className="text-blue-500">Like</label>
+          </span>
+        ) : (
+          <span className="flex gap-2" onClick={LikePost}>
+            <FaRegThumbsUp className="text-gray-500 text-2xl" />
+            <label className="text-gray-500">Like</label>
+          </span>
+        )}
         <span className="flex gap-2">
           <FaRegComment className="text-gray-500 text-2xl" />
           <label className="text-gray-500">Comment</label>
@@ -217,7 +239,7 @@ export default function Post({ allPost }) {
     </div>
   );
 }
-
+// selectedReaction
 // import React, { useEffect, useState } from "react";
 // import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 // import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";

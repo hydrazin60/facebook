@@ -1,5 +1,5 @@
 import multer from "multer";
-const MAX_SIZE = 5 * 1024 * 1024;
+const MAX_SIZE = 10 * 1024 * 1024;
 
 const upload = multer({
   storage: multer.memoryStorage(),
