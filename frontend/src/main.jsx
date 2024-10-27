@@ -20,12 +20,12 @@ import "./index.css";
 import { Toaster } from "./components/ui/sonner.jsx";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import store, { persistor } from "./redux/store.js";
-
+import store from "./redux/store.js";
+import { persistStore } from "redux-persist";
+const persistor = persistStore(store);
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
-      {/* PersistGate delays rendering until state is rehydrated */}
       <PersistGate loading={null} persistor={persistor}>
         <App />
         <Toaster />

@@ -80,7 +80,7 @@ export default function Header() {
 
   return (
     <div className="w-full bg-slate-100 shadow-md h-14 flex items-center justify-between px-4 fixed top-0 left-0 z-10">
-      <div className="flex items-center space-x-2 w-[30%]">
+      <div className="flex items-center space-x-2 w-[40%]">
         <FaFacebook className="text-5xl text-blue-600" />
         <input
           type="text"
@@ -121,7 +121,7 @@ export default function Header() {
         <Dialog>
           <DialogTrigger asChild>
             <span>
-              {user.profilePic !== null ? (
+              {/* {user.profilePic ? (
                 <>
                   <img
                     src={user.profilePic}
@@ -135,6 +135,23 @@ export default function Header() {
                     {user.firstName[0] + "." + user.lastName[0]}
                   </span>
                 </>
+              )} */}
+              {user && user.profilePic ? (
+                <>
+                  <img
+                    src={user.profilePic}
+                    alt="Profile"
+                    className="w-10 h-10 rounded-full"
+                  />
+                </>
+              ) : (
+                <>
+                  <span className="w-7 h-7 rounded-full flex items-center justify-center font-semibold text-lg">
+                    {user && user.firstName && user.lastName
+                      ? `${user.firstName[0]}.${user.lastName[0]}`
+                      : ""}
+                  </span>
+                </>
               )}
             </span>
           </DialogTrigger>
@@ -142,12 +159,30 @@ export default function Header() {
             <div className="flex flex-col">
               <div className="flex gap-2 flex-col shadow-md p-3 mb-2">
                 <div className="flex gap-2 items-center border-b-2 border-gray-300 pb-4">
-                  <Avatar>
+                  {/* <Avatar>
                     <AvatarImage src={user.profilePic} alt="Profile" />
                     <AvatarFallback>
                       {user.firstName[0] + "." + user.lastName[0]}
                     </AvatarFallback>
-                  </Avatar>
+                  </Avatar> */}
+                  {user && user.profilePic ? (
+                    <>
+                      <img
+                        src={user.profilePic}
+                        alt="Profile"
+                        className="w-10 h-10 rounded-full"
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <span className="w-7 h-7 rounded-full flex items-center justify-center font-semibold text-lg">
+                        {user && user.firstName && user.lastName
+                          ? `${user.firstName[0]}.${user.lastName[0]}`
+                          : ""}
+                      </span>
+                    </>
+                  )}
+
                   <span className="text-lg font-medium">
                     {user.firstName} {user.lastName}
                   </span>

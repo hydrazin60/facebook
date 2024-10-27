@@ -92,7 +92,6 @@ export default function Post({ allPost }) {
   const { user } = useSelector((state) => state.auth);
 
   const [liked, setLiked] = useState(false);
-  console.log(user._id, allPost.likes);
 
   const LikePost = async () => {
     setLiked(!liked);
@@ -120,7 +119,7 @@ export default function Post({ allPost }) {
       style={{ backgroundColor: "#fff" }}
     >
       <div className="flex justify-between items-center max-w-3xl">
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-2 items-center cursor-pointer">
           <Avatar>
             <AvatarImage src={allPost.authorId.profilePic} alt="profile pp" />
             <AvatarFallback className="text-md font-semibold text-zinc-700 ">
@@ -180,7 +179,7 @@ export default function Post({ allPost }) {
             key={imageIndex}
             src={image}
             alt={`post image ${imageIndex}`}
-            className="w-full h-96 object-cover border-2 border-gray-200 rounded-md"
+            className="w-full h-96 cursor-pointer object-cover border-2 border-gray-200 rounded-md"
           />
         ))}
         {allPost.images.length > 2 && (
@@ -195,7 +194,7 @@ export default function Post({ allPost }) {
 
       <div className="flex justify-between my-3">
         <div className="flex gap-2">
-          <div className="flex items-center cursor-pointer  ">
+          <div className="flex items-center cursor-pointer   ">
             <span className="text-2xl z-10">
               <AiFillLike className="text-blue-500 hover:scale-110 transition-transform" />
             </span>
@@ -204,12 +203,12 @@ export default function Post({ allPost }) {
             </span>
           </div>
 
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-500 cursor-pointer">
             {allPost.likes.includes(user._id) ? "you and others " : " "}
             {allPost.likes.length} people liked
           </p>
         </div>
-        <div className="flex text-gray-500">
+        <div className="flex text-gray-500 cursor-pointer">
           <p className="text-sm">{allPost.comments.length} Comments</p>
           <p className="text-sm">12 Shares</p>
         </div>
@@ -218,21 +217,21 @@ export default function Post({ allPost }) {
       <hr className="my-3 border-gray-300" />
       <div className="flex justify-between mx-4">
         {allPost.likes.includes(user._id) ? (
-          <span className="flex gap-2" onClick={LikePost}>
+          <span className="flex gap-2  cursor-pointer" onClick={LikePost}>
             <AiFillLike className="text-blue-500 text-2xl" />
-            <label className="text-blue-500">Like</label>
+            <label className="text-blue-500  cursor-pointer">Like</label>
           </span>
         ) : (
-          <span className="flex gap-2" onClick={LikePost}>
-            <FaRegThumbsUp className="text-gray-500 text-2xl" />
-            <label className="text-gray-500">Like</label>
+          <span className="flex gap-2  cursor-pointer  " onClick={LikePost}>
+            <FaRegThumbsUp className="text-gray-500 text-2xl  cursor-pointer" />
+            <label className="text-gray-500  cursor-pointer">Like</label>
           </span>
         )}
-        <span className="flex gap-2">
+        <span className="flex gap-2  cursor-pointer">
           <FaRegComment className="text-gray-500 text-2xl" />
-          <label className="text-gray-500">Comment</label>
+          <label className="text-gray-500 ">Comment</label>
         </span>
-        <span className="flex gap-2">
+        <span className="flex gap-2  cursor-pointer">
           <FaRegShareSquare className="text-gray-500 text-2xl" />
           <label className="text-gray-500">Share</label>
         </span>

@@ -6,7 +6,9 @@ import Home from "./components/Home.jsx";
 import RightSidbar from "./components/RightSidbar.jsx";
 import Header from "./components/Header.jsx";
 import UserProfile from "./page/UserProfile.jsx";
+import { useSelector } from "react-redux";
 export default function App() {
+  const { user } = useSelector((state) => state.auth);
   return (
     <BrowserRouter>
       <Routes>

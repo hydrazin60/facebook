@@ -25,6 +25,7 @@ import { MoreHorizontal } from "lucide-react";
 import { FcLike } from "react-icons/fc";
 import { RxCross1 } from "react-icons/rx";
 import { AiFillLike } from "react-icons/ai";
+import { FaWhatsapp } from "react-icons/fa6";
 
 export default function userPosts() {
   return (
@@ -292,7 +293,6 @@ export default function userPosts() {
                   <p className="text-4xl font-semibold">2k</p>
                 </div>
               </div>
-
               <div className="flex justify-between my-3">
                 <div className="flex gap-2">
                   <div className="flex items-center cursor-pointer  ">
@@ -304,9 +304,11 @@ export default function userPosts() {
                     </span>
                   </div>
 
-                  <p className="text-sm text-gray-500">3 people liked</p>
+                  <p className="text-sm text-gray-500 cursor-pointer ">
+                    3 people liked
+                  </p>
                 </div>
-                <div className="flex text-gray-500">
+                <div className="flex text-gray-500 cursor-pointer">
                   <p className="text-sm"> 3 Comments</p>
                   <p className="text-sm">12 Shares</p>
                 </div>
@@ -314,17 +316,23 @@ export default function userPosts() {
 
               <hr className="my-3 border-gray-300" />
               <div className="flex justify-between mx-4">
-                <span className="flex gap-2">
-                  <FaRegComment className="text-gray-500 text-2xl" />
-                  <label className="text-gray-500">Comment</label>
-                </span>
-                <span className="flex gap-2">
+                <span className="flex gap-2 cursor-pointer">
                   <FaRegThumbsUp className="text-gray-500 text-2xl" />
-                  <label className="text-blue-500">Like</label>
+                  <label className="text-blue-500 cursor-pointer">Like</label>
                 </span>
-                <span className="flex gap-2">
+                <span className="flex gap-2 cursor-pointer">
+                  <FaWhatsapp className="text-gray-500 text-2xl" />
+                  <label className="text-gray-500 cursor-pointer"> Send </label>
+                </span>
+                <span className="flex gap-2 cursor-pointer">
+                  <FaRegComment className="text-gray-500 text-2xl" />
+                  <label className="text-gray-500 cursor-pointer">
+                    Comment
+                  </label>
+                </span>
+                <span className="flex gap-2 cursor-pointer">
                   <FaRegShareSquare className="text-gray-500 text-2xl" />
-                  <label className="text-gray-500">Share</label>
+                  <label className="text-gray-500 cursor-pointer ">Share</label>
                 </span>
               </div>
             </div>

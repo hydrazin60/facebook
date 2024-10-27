@@ -93,6 +93,7 @@ import PostCreate from "./PostCreate";
 import { useDispatch, useSelector } from "react-redux";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import axios from "axios";
+import { createPost } from "@/redux/postSlice";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -108,6 +109,7 @@ export default function Home() {
           { withCredentials: true }
         );
         if (res.data.success) {
+          dispatch(createPost(res.data.data));
           setTotalFBpost(res.data.data);
         } else {
           console.error(`Error during fetching post: ${res.data.message}`);
@@ -124,15 +126,32 @@ export default function Home() {
       {/* Create Post Section */}
       <section className="h-32 rounded-lg w-full p-2 border-2 bg-white shadow-lg">
         <div className="h-1/2 border-b border-zint-400 flex justify-between items-center">
-          <Avatar className="cursor-pointer">
+          {/* <Avatar className="cursor-pointer">
             <AvatarImage src={user.profilePic} alt="Profile" />
             <AvatarFallback>
               {user.firstName[0] + "." + user.lastName[0]}
             </AvatarFallback>
-          </Avatar>
+          </Avatar> */}
+          {user && user.profilePic ? (
+            <>
+               <img
+                src={user.profilePic}
+                alt="Profile"
+                className="w-10 h-10 rounded-full"
+              />
+            </>
+          ) : (
+            <>
+              <span className="w-7 h-7 rounded-full flex items-center justify-center font-semibold text-lg">
+                {user && user.firstName && user.lastName
+                  ? `${user.firstName[0]}.${user.lastName[0]}`
+                  : ""}
+              </span>
+            </>
+          )}
           <input
             type="text"
-            placeholder={`What's on your mind, ${user.firstName}?`}
+            placeholder={`What's on your mind,  ${user.firstName}?`}
             className="w-[90%] cursor-pointer h-10 bg-transparent focus:outline-none px-4 placeholder-zinc-400 placeholder:font-[400] bg-zinc-100 hover:bg-zinc-200 rounded-full"
             readOnly
             onClick={() => setIsPostCreateDialogOpen(true)}

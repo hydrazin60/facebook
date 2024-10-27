@@ -155,11 +155,28 @@ export default function PostCreate({ open, onClose }) {
             <div className="w-full flex flex-col h-[33rem] gap-7">
               <div className="w-full h-auto flex flex-col gap-3">
                 <div className="w-full flex gap-2">
-                  <img
+                  {/* <img
                     src={user.profilePic}
                     alt="Profile"
                     className="h-11 w-11 cursor-pointer rounded-full hover:border hover:border-zinc-500 overflow-hidden object-cover"
-                  />
+                  /> */}
+                  {user && user.profilePic ? (
+                    <>
+                      <img
+                        src={user.profilePic}
+                        alt="Profile"
+                        className="h-11 w-11 cursor-pointer rounded-full hover:border hover:border-zinc-500 overflow-hidden object-cover"
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <span className="h-11 w-11 cursor-pointer flex items-center justify-center rounded-full border border-zinc-500 text-lg font-semibold bg-zinc-300">
+                        {user && user.firstName && user.lastName
+                          ? `${user.firstName[0]}.${user.lastName[0]}`
+                          : ""}
+                      </span>
+                    </>
+                  )}
                   <div>
                     <p className="text-md font-semibold text-zinc-700">
                       {user.firstName + " " + user.lastName}

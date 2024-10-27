@@ -7,31 +7,53 @@ import { BsThreeDots } from "react-icons/bs";
 import { FaSortDown } from "react-icons/fa";
 import { FaFacebookMessenger } from "react-icons/fa6";
 import UserPosts from "@/components/userProfile/UserPosts";
+import { useSelector } from "react-redux";
 export default function userProfile() {
+  const user = useSelector((state) => state.auth);
+  const posts = useSelector((state) => state.post);
+  console.log("posts isssssssss", posts);
+  console.log("user isssssssss", user);
+
   return (
     <section className="w-full h-full flex flex-col overflow-y-scroll left-sidebar     ">
       <div className="w-full h-[90vh]  flex flex-col items-center   ">
-        <div className="w-[80%] h-[65%] bg-gray-200 rounded-lg"></div>
+        <div className="w-[80%] h-[65%] bg-gray-200 rounded-lg">
+          <img
+            src="https://scontent.fktm21-1.fna.fbcdn.net/v/t39.30808-6/452195202_1901744336999472_6357747140309838802_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=Z1ypKxFMrXwQ7kNvgFrAHaB&_nc_ht=scontent.fktm21-1.fna&_nc_gid=ABovFDuV6MGMecSI7Vdke_T&oh=00_AYAUd7IiNtTZ_PiGeaY_Yx0992lyKvAOSYlrzAD1p_eWSg&oe=6722C9BB"
+            alt="pp"
+            className="w-full h-full object-cover object-top"
+          />
+        </div>
         <div className="w-[80%] h-[35%] flex flex-col  ">
           <div className=" w-full  flex py-4   justify-between border-b border-zinc-300  ">
             <div className="flex items-center  gap-4">
               <div>
                 <img
-                  src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHw%3D&w=1000&q=80"
+                  src="https://scontent.fktm21-2.fna.fbcdn.net/v/t39.30808-1/299648945_1442420789598498_8077179175096315359_n.jpg?stp=dst-jpg_s200x200&_nc_cat=107&ccb=1-7&_nc_sid=0ecb9b&_nc_ohc=pSsb9L8JAgQQ7kNvgGKOAT2&_nc_ht=scontent.fktm21-2.fna&_nc_gid=ApLoUseZR2EGmf2iMDEjPTy&oh=00_AYBL-CPPQ7fNmH0mETAfhNlGh_9G50568_h292pTj65o4Q&oe=6722EE41"
                   alt="pp"
                   className="w-40 h-40 object-cover border-2 border-gray-200 rounded-full"
                 />
               </div>
               <div>
-                <h1 className="text-3xl font-bold">Jiban Pandey</h1>
+                <h1 className="text-3xl font-bold">Khemraj Rokaya</h1>
                 <p className="text-sm text-gray-500 font-semibold">
                   16 mutal friends
                 </p>
-                <span>
+                <span className="flex ">
                   <img
-                    src="https://cdn-icons-png.flaticon.com/512/25/25231.png"
+                    src="https://scontent.fktm21-2.fna.fbcdn.net/v/t39.30808-6/458336071_535394755826733_9093169157955131347_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=fdVr5ILBQEYQ7kNvgHNaw_4&_nc_ht=scontent.fktm21-2.fna&_nc_gid=A7uuuFYcQj1DSVJ7jx8dNhV&oh=00_AYDZUWno54hV-rS6KTl9DrTDIhMttN6nVKokTE7ic5hTfQ&oe=6722C0EA"
                     alt=""
                     className="w-7 h-7 rounded-full object-contain"
+                  />
+                  <img
+                    src="https://scontent.fktm21-2.fna.fbcdn.net/v/t39.30808-6/463217935_532545289488311_2609725044807551909_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=3rd_Mt-I_6MQ7kNvgFma-4_&_nc_ht=scontent.fktm21-2.fna&_nc_gid=AHJCUqgcs9_HFaCFMmX3fzk&oh=00_AYA27Oszs0kiPkVAvjmm-j8p_ELijqopPJSrZbVvkLD7Sw&oe=6722DB09"
+                    alt=""
+                    className="w-7 h-7 rounded-full object-contain border"
+                  />
+                  <img
+                    src="https://scontent.fktm21-1.fna.fbcdn.net/v/t39.30808-1/409679696_898331191998849_8537916708917610320_n.jpg?stp=c0.0.1681.1681a_dst-jpg_s200x200&_nc_cat=101&ccb=1-7&_nc_sid=0ecb9b&_nc_ohc=dU0Ful9reYQQ7kNvgEe3wJ_&_nc_ht=scontent.fktm21-1.fna&_nc_gid=Ad0UzMTxHB-CBSS6FcV31-9&oh=00_AYCHkMKIhfKq6_GKQsQaP_1LXIqL-hcjRDQqmCpjKvuoAw&oe=6722D324"
+                    alt=""
+                    className="w-7 h-7 rounded-full object-contain border"
                   />
                 </span>
               </div>
