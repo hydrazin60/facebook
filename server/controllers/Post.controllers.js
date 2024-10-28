@@ -225,31 +225,63 @@ export const createPost = async (req, res) => {
   }
 };
 
+// export const getAllPosts = async (req, res) => {
+//   try {
+//     const post = await Post.find()
+//       .sort({ createdAt: -1 })
+//       .populate({
+//         path: "authorId",
+//         select: " firstName  lastName  profilePic ",
+//       })
+//       .populate({
+//         path: "comments",
+//         sort: { createdAt: -1 },
+//         populate: {
+//           path: "autherId",
+//           select: "firstName lastName profilePic",
+//         },
+//       });
+
+//     return res.status(200).json({
+//       message: "All posts fetched successfully",
+//       data: post,
+//       error: false,
+//       success: true,
+//     });
+//   } catch (error) {
+//     console.log(error.message);
+//     return res.status(500).json({
+//       message: `getAllPosts error: ${error.message}`,
+//       error: true,
+//       success: false,
+//     });
+//   }
+// };
+
 export const getAllPosts = async (req, res) => {
   try {
-    const post = await Post.find()
+    const posts = await Post.find()
       .sort({ createdAt: -1 })
       .populate({
         path: "authorId",
-        select: " firstName  lastName  profilePic ",
+        select: "firstName lastName profilePic",
       })
       .populate({
         path: "comments",
-        sort: { createdAt: -1 },
         populate: {
-          path: "autherId",
+          path: "authorId",
           select: "firstName lastName profilePic",
         },
       });
 
     return res.status(200).json({
       message: "All posts fetched successfully",
-      data: post,
+      data: posts,
       error: false,
       success: true,
     });
   } catch (error) {
-    console.log(error.message);
+    console.log(`getAllPosts error: ${error.message}`);
     return res.status(500).json({
       message: `getAllPosts error: ${error.message}`,
       error: true,
