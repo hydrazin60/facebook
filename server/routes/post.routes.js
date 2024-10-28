@@ -5,6 +5,7 @@ import {
   getAllPosts,
   getUserPosts,
   LikePostAndUnlike,
+  WriteComment,
 } from "../controllers/Post.controllers.js";
 import upload from "../middlewares/multer.js";
 const PostRouter = express.Router();
@@ -18,4 +19,5 @@ PostRouter.post(
 PostRouter.get("/show-all-post", isAuthenticated, getAllPosts);
 PostRouter.get("/auther-posts", isAuthenticated, getUserPosts);
 PostRouter.get("/liked-post/:id", isAuthenticated, LikePostAndUnlike);
+PostRouter.post("/write-comment/:id", isAuthenticated , WriteComment);
 export default PostRouter;

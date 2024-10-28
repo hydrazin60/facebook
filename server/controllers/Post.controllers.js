@@ -4,7 +4,6 @@ import cloudinary from "../utils/cloudinary.js";
 import User from "../models/user.models.js";
 import Comment from "../models/comment.model.js";
 
-
 // export const createPost = async (req, res) => {
 //   try {
 //     const { caption } = req.body;
@@ -371,3 +370,65 @@ export const LikePostAndUnlike = async (req, res) => {
     });
   }
 };
+
+export const WriteComment = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const userId = req.user;
+    const { text } = req.body;
+
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({
+        message: "Post not found",
+        error: true,
+        success: false,
+      });
+    }
+    if (!text || text.trim().length === 0) {
+      return res.status(400).json({
+        message: "Text is required",
+        error: true,
+        success: false,
+      });
+    }
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+        error: true,
+        success: false,
+      });
+    }
+
+    const newComment = await Comment.create({
+      text,
+      authorId: userId,
+      postId: postId,
+    });
+
+    const comment = await Comment.findById(newComment._id).populate({
+      path: "authorId",
+      select: "firstName lastName profilePic",
+    });
+
+    post.comments.push(comment._id);
+    await post.save();
+
+    return res.status(200).json({
+      message: "Comment created successfully",
+      comment,
+      error: false,
+      success: true,
+    });
+  } catch (error) {
+    console.log(`WriteComment error: ${error.message}`);
+    return res.status(500).json({
+      message: `WriteComment error: ${error.message}`,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+ 
