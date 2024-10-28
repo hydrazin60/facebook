@@ -431,4 +431,50 @@ export const WriteComment = async (req, res) => {
   }
 };
 
- 
+export const DeletePost = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const autherId = req.user;
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({
+        message: "Post not found",
+        error: true,
+        success: false,
+      });
+    }
+    const user = await User.findById(autherId);
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+        error: true,
+        success: false,
+      });
+    }
+
+    if (post.authorId.toString() !== autherId) {
+      return res.status(400).json({
+        message: "Invalid credentials You can't delete this post",
+        error: true,
+        success: false,
+      });
+    }
+    await Post.findByIdAndDelete(postId);
+    user.posts = user.posts.filter((post) => post.toString() !== postId);
+
+    await user.save();
+    await Comment.deleteMany({ postId: postId });
+    return res.status(200).json({
+      message: "Post deleted successfully",
+      error: false,
+      success: true,
+    });
+  } catch (error) {
+    console.error(`DeletePost error: ${error.message}`);
+    return res.status(500).json({
+      message: `DeletePost error: ${error.message}`,
+      error: true,
+      success: false,
+    });
+  }
+};

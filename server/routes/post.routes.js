@@ -2,6 +2,7 @@ import express from "express";
 import { isAuthenticated } from "../middlewares/isAuthenticated.js";
 import {
   createPost,
+  DeletePost,
   getAllPosts,
   getUserPosts,
   LikePostAndUnlike,
@@ -20,4 +21,5 @@ PostRouter.get("/show-all-post", isAuthenticated, getAllPosts);
 PostRouter.get("/auther-posts", isAuthenticated, getUserPosts);
 PostRouter.get("/liked-post/:id", isAuthenticated, LikePostAndUnlike);
 PostRouter.post("/write-comment/:id", isAuthenticated , WriteComment);
+PostRouter.delete("/delete-post/:id", isAuthenticated,  DeletePost);
 export default PostRouter;
