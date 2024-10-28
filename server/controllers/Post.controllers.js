@@ -431,18 +431,28 @@ export const WriteComment = async (req, res) => {
   }
 };
 
-export const DeletePost = async (req, res) => {
+export const DeleteComment = async (req, res) => {
   try {
-    const postId = req.params.id;
+    const commentId = req.params.id;
     const autherId = req.user;
-    const post = await Post.findById(postId);
-    if (!post) {
+
+    if (commentId.length !== 24) {
       return res.status(404).json({
-        message: "Post not found",
+        message: "invalid comment id",
         error: true,
         success: false,
       });
     }
+    const comment = await Comment.findById(commentId);
+    if (!comment) {
+      return res.status(404).json({
+        message: "Comment not found",
+        error: true,
+        success: false,
+      });
+    }
+
+    // Find the user
     const user = await User.findById(autherId);
     if (!user) {
       return res.status(404).json({
@@ -452,10 +462,66 @@ export const DeletePost = async (req, res) => {
       });
     }
 
+    // Check if the user is the author of the comment or the post
+    const post = await Post.findById(comment.postId);
+    if (!post) {
+      return res.status(404).json({
+        message: "Post not found for the comment",
+        error: true,
+        success: false,
+      });
+    }
+
+    if (
+      autherId.toString() !== comment.authorId.toString() &&
+      autherId.toString() !== post.authorId.toString()
+    ) {
+      return res.status(403).json({
+        message: "You can't delete this comment",
+        error: true,
+        success: false,
+      });
+    }
+
+    // Delete the comment
+    await Comment.findByIdAndDelete(commentId);
+    return res.status(200).json({
+      message: "Comment deleted successfully",
+      error: false,
+      success: true,
+    });
+  } catch (error) {
+    console.log(`DeleteComment error: ${error.message}`);
+    return res.status(500).json({
+      message: `DeleteComment error: ${error.message}`,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+export const DeletePost = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const autherId = req.user;
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({
+        message: "Post not found",
+        success: false,
+      });
+    }
+    const user = await User.findById(autherId);
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+        success: false,
+      });
+    }
+
     if (post.authorId.toString() !== autherId) {
       return res.status(400).json({
         message: "Invalid credentials You can't delete this post",
-        error: true,
         success: false,
       });
     }
@@ -466,7 +532,6 @@ export const DeletePost = async (req, res) => {
     await Comment.deleteMany({ postId: postId });
     return res.status(200).json({
       message: "Post deleted successfully",
-      error: false,
       success: true,
     });
   } catch (error) {
