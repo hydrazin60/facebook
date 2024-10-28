@@ -431,6 +431,72 @@ export const WriteComment = async (req, res) => {
   }
 };
 
+export const editComment = async (req, res) => {
+  try {
+    const commentId = req.params.id;
+    const autherId = req.user;
+    const { text } = req.body;
+    if (commentId.length !== 24) {
+      return res.status(404).json({
+        message: "invalid comment id",
+        error: true,
+        success: false,
+      });
+    }
+    if (!text || text.trim().length === 0) {
+      return res.status(400).json({
+        message: "Text is required",
+        error: true,
+        success: false,
+      });
+    }
+
+    const comment = await Comment.findById(commentId);
+    if (!comment) {
+      return res.status(404).json({
+        message: "Comment not found",
+        error: true,
+        success: false,
+      });
+    }
+    const user = await User.findById(autherId);
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+        error: true,
+        success: false,
+      });
+    }
+    if (autherId !== comment.authorId.toString()) {
+      return res.status(400).json({
+        message: "Invalid credentials You can't edit this comment",
+        error: true,
+        success: false,
+      });
+    }
+    comment.text = text;
+
+    const commentData = await Comment.findById(commentId).populate({
+      path: "authorId",
+      select: "firstName lastName profilePic",
+    });
+    await comment.save();
+    return res.status(200).json({
+      message: "Comment edited successfully",
+      comment: commentData,
+      error: false,
+      success: true,
+    });
+  } catch (error) {
+    console.log(`editComment error: ${error.message}`);
+    return res.status(500).json({
+      message: `editComment error: ${error.message}`,
+      error: true,
+      success: false,
+    });
+  }
+};
+
 export const DeleteComment = async (req, res) => {
   try {
     const commentId = req.params.id;

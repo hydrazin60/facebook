@@ -4,6 +4,7 @@ import {
   createPost,
   DeleteComment,
   DeletePost,
+  editComment,
   getAllPosts,
   getUserPosts,
   LikePostAndUnlike,
@@ -22,6 +23,7 @@ PostRouter.get("/show-all-post", isAuthenticated, getAllPosts);
 PostRouter.get("/auther-posts", isAuthenticated, getUserPosts);
 PostRouter.get("/liked-post/:id", isAuthenticated, LikePostAndUnlike);
 PostRouter.post("/write-comment/:id", isAuthenticated, WriteComment);
+PostRouter.put("/edit-comment/:id", isAuthenticated,  editComment);
 PostRouter.delete("/delete-comment/:id", isAuthenticated, DeleteComment);
 PostRouter.delete("/delete-post/:id", isAuthenticated, DeletePost);
 export default PostRouter;
