@@ -90,12 +90,7 @@ const reactions = [
 
 export default function Post({ allPost }) {
   const { user } = useSelector((state) => state.auth);
-
-  const [liked, setLiked] = useState(false);
-
   const LikePost = async () => {
-    setLiked(!liked);
-
     try {
       const res = await axios.get(
         `http://localhost:4000/facebook/api/v1/post/liked-post/${allPost._id}`,
