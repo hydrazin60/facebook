@@ -146,7 +146,6 @@ export const Login = async (req, res) => {
   }
 };
 
-
 export const Logout = async (req, res) => {
   try {
     res.clearCookie("token", {
@@ -171,7 +170,7 @@ export const Logout = async (req, res) => {
 export const getProfile = async (req, res) => {
   try {
     const userId = req.params.id;
-    const user = await User.findById(userId).select("-password");
+    const user = await User.findById(userId).select("-password -savePost");
     if (!user) {
       return res.status(404).json({
         message: "User not found",
@@ -179,6 +178,15 @@ export const getProfile = async (req, res) => {
         success: false,
       });
     }
+    await user.populate({
+      path: "posts",
+      options: {
+        sort: {
+          createdAt: -1,
+        },
+      },
+      select: "caption images   likes comments createdAt",
+    });
     return res.status(200).json({
       message: "User found successfully",
       error: false,
