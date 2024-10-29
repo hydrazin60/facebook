@@ -21,7 +21,7 @@ import {
   BsEmojiAngry,
   BsEmojiSurprise,
 } from "react-icons/bs";
-import axios from "axios";
+import axios, { all } from "axios";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -92,8 +92,7 @@ const reactions = [
 export default function Post({ allPost }) {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
- 
-  
+
   // Local state to track if the post is liked by the user
   const [isLiked, setIsLiked] = useState(allPost.likes.includes(user._id));
 
@@ -132,13 +131,28 @@ export default function Post({ allPost }) {
               })
             }
           >
-            
             <AvatarImage src={allPost.authorId.profilePic} alt="profile pp" />
             <AvatarFallback className="text-md font-semibold text-zinc-700 ">
-              {allPost.authorId.firstName.charAt(0)}
-              {allPost.authorId.lastName.charAt(0)}
+              {allPost.authorId.gender === "male" ? (
+                <>
+                  <img
+                    src="/public\boys.jpeg"
+                    alt="pp"
+                    className="h-full w-full rounded-full overflow-hidden object-contain"
+                  />
+                </>
+              ) : (
+                <>
+                  <img
+                    src="/public\girlimogi.png"
+                    alt="pp"
+                    className="h-full w-full rounded-full overflow-hidden object-contain"
+                  />
+                </>
+              )}
             </AvatarFallback>
           </Avatar>
+
           <span onClick={() => navigate(`/profile/${allPost.authorId._id}`)}>
             <p className="font-semibold text-md">
               {allPost.authorId.firstName} {allPost.authorId.lastName}

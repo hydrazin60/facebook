@@ -264,18 +264,18 @@ export const getAllPosts = async (req, res) => {
       .sort({ createdAt: -1 })
       .populate({
         path: "authorId",
-        select: "firstName lastName profilePic",
+        select: "firstName lastName profilePic gender",
       })
       .populate({
         path: "comments",
         populate: {
           path: "authorId",
-          select: "firstName lastName profilePic",
+          select: "firstName lastName profilePic ",
         },
       });
 
     return res.status(200).json({
-      message: "All posts fetched successfully",
+      message: "All posts fetched successfully ",
       data: posts,
       error: false,
       success: true,

@@ -51,11 +51,29 @@ export default function userProfile() {
           <div className=" w-full  flex py-4   justify-between border-b border-zinc-300  ">
             <div className="flex items-center  gap-4">
               <div>
-                <img
-                  src={userProfile?.profilePic}
-                  alt="pp"
-                  className="w-40 h-40 object-cover border-2 border-gray-200 rounded-full"
-                />
+                {userProfile?.profilePic ? (
+                  <img
+                    src={userProfile?.profilePic}
+                    alt="pp"
+                    className="w-40 h-40 object-cover border-2 border-gray-200 rounded-full"
+                  />
+                ) : (
+                  <div className="w-40 h-40 object-cover border-2 border-gray-200 rounded-full bg-gray-100 font-bold text-6xl flex items-center justify-center">
+                    {userProfile?.gender === "male" ? (
+                      <>
+                        <img
+                          src="/public\boys.jpeg"
+                          className="w-full h-full rounded-full object-cover "
+                          alt="pp"
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <img src="/public\girlimogi.png" alt="pp" />
+                      </>
+                    )}
+                  </div>
+                )}
               </div>
               <div>
                 <h1 className="text-3xl font-bold">

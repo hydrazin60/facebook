@@ -81,9 +81,20 @@ export default function LeftSidebar() {
               {item.id === "0" && user ? (
                 <Avatar>
                   <AvatarImage src={user.profilePic} alt="Profile" />
-                  <AvatarFallback>
-                    {user.firstName[0].toUpperCase()}.
-                    {user.lastName[0].toUpperCase()}
+                  <AvatarFallback className="h-full w-full ">
+                    {user.gender === "male" ? (
+                      <img
+                        src="/public\boys.jpeg"
+                        alt="pp"
+                        className="h-full w-full  rounded-full overflow-hidden object-contain"
+                      />
+                    ) : (
+                      <img
+                        src="/public\girlimogi.png"
+                        alt="pp"
+                        className="h-full w-full rounded-full overflow-hidden object-contain"
+                      />
+                    )}
                   </AvatarFallback>
                 </Avatar>
               ) : (

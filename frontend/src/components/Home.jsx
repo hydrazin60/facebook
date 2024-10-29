@@ -38,7 +38,6 @@ export default function Home() {
 
   return (
     <div className="relative mt-16 w-[43%] bg-slate-50 mx-auto flex flex-col gap-4">
-      {/* Create Post Section */}
       <section className="h-32 rounded-lg w-full p-2 border-2 bg-white shadow-lg">
         <div className="h-1/2 border-b border-zinc-400 flex justify-between items-center">
           {user && user.profilePic ? (
@@ -48,10 +47,24 @@ export default function Home() {
               className="w-10 h-10 rounded-full"
             />
           ) : (
-            <span className="w-7 h-7 rounded-full flex items-center justify-center font-semibold text-lg">
-              {user && user.firstName && user.lastName
-                ? `${user.firstName[0]}.${user.lastName[0]}`
-                : ""}
+            <span className="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-lg">
+              <>
+                <span className="   rounded-full  flex items-center justify-center border border-gray-300 ">
+                  {user && user.gender === "male" ? (
+                    <img
+                      src="/public\boys.jpeg"
+                      alt="pp"
+                      className="h-full w-full  rounded-full overflow-hidden object-contain"
+                    />
+                  ) : (
+                    <img
+                      src="/public\girlimogi.png"
+                      alt="pp"
+                      className="h-full w-full rounded-full overflow-hidden object-contain"
+                    />
+                  )}
+                </span>
+              </>
             </span>
           )}
           <input

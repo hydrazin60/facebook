@@ -123,21 +123,31 @@ export default function Header() {
         </span>
         <Dialog>
           <DialogTrigger asChild>
-            <span className="cursor-pointer flex items-center justify-center hover:bg-gray-200 p-2 bg-gray-300 rounded-full">
+            <span className="cursor-pointer flex items-center justify-center  hover:bg-gray-200   bg-gray-300 rounded-full">
               {user && user.profilePic ? (
                 <>
                   <img
                     src={user.profilePic}
                     alt="Profile"
-                    className="w-10 h-10 rounded-full corsor-pointer  "
+                    className="w-10  h-10 rounded-full corsor-pointer  "
                   />
                 </>
               ) : (
                 <>
-                  <span className=" h-6 w-6 rounded-full flex items-center justify-center font-bold text-lg">
-                    {user && user.firstName && user.lastName
-                      ? `${user.firstName[0]}.${user.lastName[0]}`
-                      : ""}
+                  <span className=" h-10 w-10 rounded-full  flex items-center justify-center border-2 border-gray-300 ">
+                    {user && user.gender === "male" ? (
+                      <img
+                        src="/public\boys.jpeg"
+                        alt="pp"
+                        className="h-full w-full  rounded-full overflow-hidden object-contain"
+                      />
+                    ) : (
+                      <img
+                        src="/public\girlimogi.png"
+                        alt="pp"
+                        className="h-full w-full rounded-full overflow-hidden object-contain"
+                      />
+                    )}
                   </span>
                 </>
               )}
@@ -163,11 +173,23 @@ export default function Header() {
                     </>
                   ) : (
                     <>
-                      <span className="w-7 h-7  rounded-full flex items-center justify-center font-semibold text-lg">
-                        {user && user.firstName && user.lastName
-                          ? `${user.firstName[0]}.${user.lastName[0]}`
-                          : ""}
-                      </span>
+                      <>
+                        <span className=" h-10 w-10 rounded-full  flex items-center justify-center border-2 border-gray-300 ">
+                          {user && user.gender === "male" ? (
+                            <img
+                              src="/public\boys.jpeg"
+                              alt="pp"
+                              className="h-full w-full  rounded-full overflow-hidden object-contain"
+                            />
+                          ) : (
+                            <img
+                              src="/public\girlimogi.png"
+                              alt="pp"
+                              className="h-full w-full rounded-full overflow-hidden object-contain"
+                            />
+                          )}
+                        </span>
+                      </>
                     </>
                   )}
 

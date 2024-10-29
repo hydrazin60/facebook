@@ -663,7 +663,25 @@ export default function userPosts({ profileViewUserData }) {
                   alt="Profile"
                   className="w-10 h-10"
                 />
-                <AvatarFallback>jf</AvatarFallback>
+                <span className="text-md font-semibold text-zinc-700 border-2 rounded-full  ">
+                  {profileViewUserData.gender === "male" ? (
+                    <>
+                      <img
+                        src="/public\boys.jpeg"
+                        alt="pp"
+                        className="h-full w-full rounded-full overflow-hidden object-contain"
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <img
+                        src="/public\girlimogi.png"
+                        alt="pp"
+                        className="h-full w-full rounded-full overflow-hidden object-contain"
+                      />{" "}
+                    </>
+                  )}
+                </span>
               </Avatar>
               <input
                 type="text"
@@ -701,13 +719,25 @@ export default function userPosts({ profileViewUserData }) {
                           src={profileViewUserData.profilePic}
                           alt="profile pp"
                         />
-                        <AvatarFallback className="text-md font-semibold text-zinc-700 ">
-                          {profileViewUserData.firstName &&
-                          profileViewUserData.lastName
-                            ? profileViewUserData.firstName[0] +
-                              profileViewUserData.lastName[0]
-                            : "?"}
-                        </AvatarFallback>
+                        <span className="text-md font-semibold text-zinc-700 border-2 rounded-full  ">
+                          {profileViewUserData.gender === "male" ? (
+                            <>
+                              <img
+                                src="/public\boys.jpeg"
+                                alt="pp"
+                                className="h-full w-full rounded-full overflow-hidden object-contain"
+                              />
+                            </>
+                          ) : (
+                            <>
+                              <img
+                                src="/public\girlimogi.png"
+                                alt="pp"
+                                className="h-full w-full rounded-full overflow-hidden object-contain"
+                              />{" "}
+                            </>
+                          )}
+                        </span>
                       </Avatar>
                       <span>
                         <p className="font-semibold text-md">
