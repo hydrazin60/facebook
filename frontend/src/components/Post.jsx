@@ -167,7 +167,7 @@ export default function Post({ allPost }) {
           >
             <AvatarImage src={allPost.authorId.profilePic} alt="profile pp" />
             <AvatarFallback className="text-md font-semibold text-zinc-700 ">
-              {allPost.authorId.gender === "male" ? (
+              {allPost.authorId.gender == "male" ? (
                 <>
                   <img
                     src="/public\boys.jpeg"

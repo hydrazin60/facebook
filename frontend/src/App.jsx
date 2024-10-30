@@ -15,7 +15,7 @@ export default function App() {
         <Route
           path="/"
           element={
-            <div className="flex justify-between ">
+            <div className="flex justify-between bg-gray-50 ">
               <Header />
               <LeftSidbar />
               <Home />

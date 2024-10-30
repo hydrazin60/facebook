@@ -11,6 +11,7 @@ import { GoChevronDown } from "react-icons/go";
 import { MdAutoGraph } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { useNavigate } from "react-router-dom";
 
 const leftSidebarIcons = [
   {
@@ -66,18 +67,24 @@ const leftSidebarIcons = [
 ];
 
 export default function LeftSidebar() {
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
-
+  const leftsidbarIconClickHandler = (id) => {
+    if (id === "0") {
+      navigate(`/profile/${user._id}`);
+    }
+  };
   return (
     <div className="w-[30%] h-[100vh] bg-slate-50 fixed top-10 mt-4 left-0">
       <div className="p-4 w-[80%] h-full flex flex-col">
         {leftSidebarIcons.map((item) => (
           <div
             key={item.id}
-            className="flex items-center cursor-pointer hover:bg-gray-100 p-3 rounded-md gap-4 transition duration-200"
+            className="flex items-center cursor-pointer hover:bg-gray-200 p-3 rounded-md gap-4 transition duration-200"
+            onClick={() => leftsidbarIconClickHandler(item.id)}
           >
             {/* Show Avatar for Profile, otherwise show the icon */}
-            <span className="text-facebook-blue text-3xl">
+            <span className="text-facebook-blue text-3xl ">
               {item.id === "0" && user ? (
                 <Avatar>
                   <AvatarImage src={user.profilePic} alt="Profile" />

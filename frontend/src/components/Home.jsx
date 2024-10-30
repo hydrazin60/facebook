@@ -50,7 +50,7 @@ export default function Home() {
             <span className="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-lg">
               <>
                 <span className="   rounded-full  flex items-center justify-center border border-gray-300 ">
-                  {user && user.gender === "male" ? (
+                  {user && user.gender == "male" ? (
                     <img
                       src="/public\boys.jpeg"
                       alt="pp"
