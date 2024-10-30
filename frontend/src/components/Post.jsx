@@ -14,6 +14,7 @@ import { FaPlus } from "react-icons/fa6";
 import { RxCross2 } from "react-icons/rx";
 import { AiFillLike } from "react-icons/ai";
 import { FcLike } from "react-icons/fc";
+import { FaDeleteLeft } from "react-icons/fa6";
 
 import {
   BsEmojiLaughing,
@@ -23,8 +24,9 @@ import {
 } from "react-icons/bs";
 import axios, { all } from "axios";
 import { toast } from "sonner";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setPosts } from "@/redux/postSlice";
 
 const userRightsidemoreiconData = [
   {
@@ -75,6 +77,12 @@ const userRightsidemoreiconData = [
     name: `Block`,
     description: "Stop seeing posts from this person.",
   },
+  {
+    id: 9,
+    icon: <FaDeleteLeft />,
+    name: "Delete Post",
+    description: "Permanently delete this post.",
+  },
 ];
 
 const reactions = [
@@ -90,10 +98,10 @@ const reactions = [
 ];
 
 export default function Post({ allPost }) {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
-
-  // Local state to track if the post is liked by the user
+  const { posts } = useSelector((state) => state.post);
   const [isLiked, setIsLiked] = useState(allPost.likes.includes(user._id));
 
   const LikePost = async () => {
@@ -112,6 +120,32 @@ export default function Post({ allPost }) {
     } catch (err) {
       console.log(err);
       toast.error(err.response?.data?.message || "An error occurred");
+    }
+  };
+  const handleDeletePost = async () => {
+    try {
+      const res = await axios.delete(
+        `http://localhost:4000/facebook/api/v1/post/delete-post/${allPost._id}`,
+        {
+          withCredentials: true,
+        }
+      );
+      if (res.data.success) {
+        toast.success(res.data.message);
+        dispatch(setPosts(posts.filter((post) => post._id !== allPost._id)));
+        onclose();
+      }
+    } catch (err) {
+      console.log(`Error during deleting post: ${err.message}`);
+      toast.error(err.response?.data?.message || "An error occurred");
+    }
+  };
+
+  const handleClickOnMoreHorizontal = async (name) => {
+    if (name === "Delete Post") {
+      if (window.confirm("Are you sure you want to delete this post?")) {
+        await handleDeletePost();
+      }
     }
   };
 
@@ -171,22 +205,39 @@ export default function Post({ allPost }) {
               </span>
             </DialogTrigger>
             <DialogContent className="w-96 p-2 shadow-lg border border-gray-200 rounded-md">
-              {userRightsidemoreiconData.map((item, itemIndex) => (
-                <div
-                  className="flex gap-4 items-center p-2 hover:bg-gray-100 rounded-md cursor-pointer"
-                  key={itemIndex}
-                >
-                  <span className="text-black text-xl">{item.icon}</span>
-                  <div>
-                    <p className="font-semibold text-sm">{item.name}</p>
-                    {item.description && (
-                      <p className="text-xs text-gray-500">
-                        {item.description}
-                      </p>
-                    )}
+              {userRightsidemoreiconData
+                .filter((item) => {
+                  if (
+                    item.name === "Delete Post" &&
+                    allPost.authorId._id !== user._id
+                  ) {
+                    return false;
+                  }
+                  return true;
+                })
+                .map((item, itemIndex) => (
+                  <div
+                    className="flex gap-4 items-center p-2 hover:bg-gray-100 rounded-md cursor-pointer"
+                    key={itemIndex}
+                    onClick={() => handleClickOnMoreHorizontal(item.name)}
+                  >
+                    <span className="text-black text-xl">
+                      {allPost.authorId._id === user._id ? (
+                        <>{item.icon}</>
+                      ) : (
+                        <>{item.icon} </>
+                      )}
+                    </span>
+                    <div>
+                      <p className="font-semibold text-sm">{item.name}</p>
+                      {item.description && (
+                        <p className="text-xs text-gray-500">
+                          {item.description}
+                        </p>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </DialogContent>
           </Dialog>
           <span className="text-lg h-8 w-8 cursor-pointer hover:bg-zinc-200 flex items-center justify-center rounded-full">
@@ -194,12 +245,10 @@ export default function Post({ allPost }) {
           </span>
         </div>
       </div>
-
       {/* Post Caption */}
       <div className="my-2">
         <p>{allPost.caption}</p>
       </div>
-
       {/* Post Images */}
       <div className="relative h-full w-full flex overflow-hidden">
         {allPost.images.map((image, imageIndex) => (
