@@ -3,11 +3,11 @@ import { Button } from "@/components/ui/button";
 import { LogIn, Section } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { FaChevronDown } from "react-icons/fa6";
-import { BsThreeDots } from "react-icons/bs";
+import { BsFileBarGraph, BsThreeDots } from "react-icons/bs";
 import { FaEdit, FaSortDown } from "react-icons/fa";
 import { FaFacebookMessenger } from "react-icons/fa6";
 import UserPosts from "@/components/userProfile/UserPosts";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -16,6 +16,7 @@ import { PiUserSoundFill } from "react-icons/pi";
 export default function userProfile() {
   const user = useSelector((state) => state.auth.user);
   const location = useLocation();
+  const navigate = useNavigate();
   const profileViewUserId = useParams();
   const [userProfile, setUserProfile] = React.useState({});
   const [isFollowing, setIsFollowing] = useState(
@@ -108,10 +109,10 @@ export default function userProfile() {
                   {userProfile?.firstName} {userProfile?.lastName}
                 </h1>
                 <p className="text-sm text-gray-500 font-semibold">
-                  {userProfile?.followers} followers || {userProfile?.following}{" "}
-                  following
+                  {userProfile?.followers?.length} followers ||{"  "}
+                  {userProfile?.following?.length} following
                 </p>
-                <span className="flex ">
+                {/* <span className="flex ">
                   <img
                     src="https://scontent.fktm21-2.fna.fbcdn.net/v/t39.30808-6/458336071_535394755826733_9093169157955131347_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=fdVr5ILBQEYQ7kNvgHNaw_4&_nc_ht=scontent.fktm21-2.fna&_nc_gid=A7uuuFYcQj1DSVJ7jx8dNhV&oh=00_AYDZUWno54hV-rS6KTl9DrTDIhMttN6nVKokTE7ic5hTfQ&oe=6722C0EA"
                     alt=""
@@ -127,24 +128,27 @@ export default function userProfile() {
                     alt=""
                     className="w-7 h-7 rounded-full object-contain border"
                   />
-                </span>
+                </span> */}
               </div>
             </div>
-            <div className="flex h-full   flex-col justify-center gap-3  ">
+            <div className="flex h-full items-end   flex-col justify-center gap-3  ">
               <div className="flex h-full  items-end gap-2  ">
                 {user?._id === userProfile?._id ? (
                   <>
                     <Button className="bg-blue-600 hover:bg-blue-700 flex items-center gap-2 ">
-                      <FaFacebookMessenger className="text-white text-lg" />
+                      <BsFileBarGraph className="text-white text-xl" />
                       <p>Professional dashboard</p>
                     </Button>
-                    <Button className="bg-zinc-300 hover:bg-zinc-400 hover:text-black flex items-center gap-2">
+                    <Button
+                      className="bg-zinc-300 hover:bg-zinc-400 hover:text-black flex items-center gap-2"
+                      onClick={() => navigate(`/profile/edit/${user?._id}`)}
+                    >
                       <FaEdit className="text-black text-lg" />
                       <p className="text-black text-[0.9rem] font-bold">Edit</p>
                     </Button>
                   </>
                 ) : (
-                  <></>
+                  <>{console.log(user?._id)}</>
                 )}
               </div>
               <div className="flex  items-end  gap-2  ">
@@ -174,11 +178,11 @@ export default function userProfile() {
                       </svg>
                       {isFollowing ? (
                         <p className="text-black text-[0.9rem] font-bold">
-                          Unfollow{" "}
+                          Unfollow
                         </p>
                       ) : (
                         <p className={`text-black  text-[0.9rem] font-bold `}>
-                          Follow{" "}
+                          Follow
                         </p>
                       )}
                     </Button>

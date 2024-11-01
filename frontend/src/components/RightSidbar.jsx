@@ -5,8 +5,11 @@ import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import { toast } from "sonner";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setMutualFriend } from "@/redux/mutualFriendSlice";
 
 export default function RightSidbar() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [suggestUser, setSuggestUser] = React.useState([]);
   useEffect(() => {
@@ -19,6 +22,7 @@ export default function RightSidbar() {
           }
         );
         if (res.data.success) {
+          dispatch(setMutualFriend(res.data.suggestedUser));
           setSuggestUser(res.data.suggestedUser);
         } else {
           toast.error(res.data.message);
@@ -30,8 +34,7 @@ export default function RightSidbar() {
 
     GetSuggestUser();
   }, []);
-  console.log(suggestUser);
-
+ 
   return (
     <div className="w-[20%] h-[100vh] fixed top-10 right-0 p-10 bg-slate-50 ">
       <div className="flex flex-col gap-4">

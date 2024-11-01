@@ -112,7 +112,7 @@ export default function Post({ allPost }) {
       );
 
       if (res.data.success) {
-        setIsLiked((prev) => !prev);
+        setIsLiked(!isLiked);
         toast.success(res.data.message);
       } else {
         toast.error(res.data.message);
@@ -122,6 +122,7 @@ export default function Post({ allPost }) {
       toast.error(err.response?.data?.message || "An error occurred");
     }
   };
+
   const handleDeletePost = async () => {
     try {
       const res = await axios.delete(
@@ -297,7 +298,7 @@ export default function Post({ allPost }) {
 
       {/* Like/Comment/Share Buttons */}
       <div className="flex justify-between mx-4">
-        <span className="flex gap-2 cursor-pointer" onClick={LikePost}>
+        <span className="flex gap-2 cursor-pointer" onClick={() => LikePost()}>
           {isLiked ? (
             <AiFillLike className="text-blue-500 text-2xl" />
           ) : (

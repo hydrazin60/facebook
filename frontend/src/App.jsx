@@ -7,6 +7,7 @@ import RightSidbar from "./components/RightSidbar.jsx";
 import Header from "./components/Header.jsx";
 import UserProfile from "./page/UserProfile.jsx";
 import { useSelector } from "react-redux";
+import EditProfile from "./components/userProfile/EditProfile.jsx";
 export default function App() {
   const { user } = useSelector((state) => state.auth);
   return (
@@ -32,7 +33,7 @@ export default function App() {
             </div>
           }
         />
-
+        <Route path="/profile/edit/:id" element={<EditProfile />} />
         <Route path="/sign-in" element={<SignIn />} />
       </Routes>
     </BrowserRouter>
