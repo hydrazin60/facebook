@@ -154,6 +154,7 @@ import Comment from "../models/comment.model.js";
 //   }
 // };
 
+
 export const createPost = async (req, res) => {
   try {
     const { caption } = req.body;
@@ -225,6 +226,7 @@ export const createPost = async (req, res) => {
   }
 };
 
+
 // export const getAllPosts = async (req, res) => {
 //   try {
 //     const post = await Post.find()
@@ -257,6 +259,7 @@ export const createPost = async (req, res) => {
 //     });
 //   }
 // };
+
 
 export const getAllPosts = async (req, res) => {
   try {

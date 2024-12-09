@@ -329,15 +329,15 @@ export const followOrUnfollow = async (req, res) => {
         success: false,
       });
     }
-
-    const jiban = await User.findById(followers);
-    const karuna = await User.findById(following);
     if (followers === following) {
       return res.status(404).json({
         message: "You can't follow yourself",
         success: false,
       });
     }
+    const jiban = await User.findById(followers);
+    const karuna = await User.findById(following);
+
     if (!karuna) {
       return res.status(404).json({
         message: "User not found",
