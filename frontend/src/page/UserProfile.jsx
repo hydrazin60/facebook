@@ -65,7 +65,6 @@ export default function userProfile() {
       console.log(`handleFollow error: ${err.message}`);
     }
   };
-
   return (
     <section className="w-full h-full flex flex-col overflow-y-scroll left-sidebar     ">
       <div className="w-full h-[90vh]  flex flex-col items-center   ">
